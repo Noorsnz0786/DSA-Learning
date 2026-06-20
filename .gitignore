@@ -1,0 +1,5 @@
+# Claude Code
+.claude/
+
+# Playwright CLI (snapshots, logs, traces)
+.playwright-cli/

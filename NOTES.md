@@ -34,7 +34,9 @@
 - ▶ PLAY BUTTON added to makeTrace in BOTH files (auto-runs the step trace; Play/Pause toggle, stops on manual step/reset). Quiz.mountAll now try/catch-wrapped (one bad quiz hides instead of breaking the rest).
 - Each Python section now has: a code-flow runner (trace-py1..5 + loop tracer) WITH play, 14 quizzes, and 2 practice problems. 84 quizzes total.
 - User asked for "atleast 20 quizzes per section" — currently 14/section (kept high-quality, no filler). Can top up to 20 on request.
-- ⏭️ Python NEXT (user explicitly wants these — answer to "is this till loop?"): 7 Conditionals (if/elif/else), 8 Tuples, 9 Sets, 10 Functions, 11 Comprehensions, 12 Classes/OOP (for Frappe). Build each with runner+play, ~20 quizzes, problems.
+- ✅ Python sections 7-10 added: 7 Conditionals (if/elif/else + truthiness + ternary), 8 Tuples (immutable + unpacking/swap), 9 Sets (unique + dedup + membership), 10 Functions (def/return vs print/defaults/scope). Each has a play-runner (trace-py7..10), 12-14 quizzes, 2 practice problems, checklist.
+- Python course now: 10 sections, 10 tracers, 136 quizzes total. Verified clean, no errors, Functions tracer shows call→return jump.
+- ⏭️ Python NEXT: 11 Comprehensions (list/dict/set one-liners), 12 Classes/OOP (for Frappe). Same format.
 - Verified: both files node --check clean, no JS errors, all sections render, animations work, cross-tab nav works, mobile overflow fixed on both.
 
 ## Progress (build status)

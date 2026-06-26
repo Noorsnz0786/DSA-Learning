@@ -168,7 +168,11 @@ details.sol[open]>summary::before{content:"▾ ";}
     <div class="navitem" data-go="3"><span>4 · Lists</span><span class="mini" data-mini="4">0/0</span></div>
     <div class="navitem" data-go="4"><span>5 · Dictionaries</span><span class="mini" data-mini="5">0/0</span></div>
     <div class="navitem" data-go="5"><span>6 · Loops</span><span class="mini" data-mini="6">0/0</span></div>
-    <div class="navitem locked" data-go="-1"><span>7+ · Conditionals, Functions…</span><span class="mini">soon</span></div>
+    <div class="navitem" data-go="6"><span>7 · Conditionals (if/else)</span><span class="mini" data-mini="7">0/0</span></div>
+    <div class="navitem" data-go="7"><span>8 · Tuples</span><span class="mini" data-mini="8">0/0</span></div>
+    <div class="navitem" data-go="8"><span>9 · Sets</span><span class="mini" data-mini="9">0/0</span></div>
+    <div class="navitem" data-go="9"><span>10 · Functions</span><span class="mini" data-mini="10">0/0</span></div>
+    <div class="navitem locked" data-go="-1"><span>11+ · Comprehensions, Classes…</span><span class="mini">soon</span></div>
     <div style="margin-top:1.2rem;padding-top:0.8rem;border-top:1px solid var(--rule);">
       <button class="reset" id="reset-progress">Reset my progress</button>
     </div>
@@ -650,10 +654,272 @@ print(total)   # 15</code></pre></details></div></details>
       </ul>
       <div class="pagenav">
         <button class="ghost" data-go="4">← Back</button>
-        <span style="font-family:-apple-system,sans-serif;font-size:0.85rem;color:var(--ink-soft);align-self:center;">More sections coming →</span>
+        <button data-go="6">Next: Conditionals →</button>
       </div>
       <div class="coming" style="margin-top:1.5rem;">
         <strong>Next up:</strong> Conditionals (if/elif/else) · Functions · Comprehensions · Classes (for Frappe). Then jump to the <a href="index.html">📘 DSA tab</a>.
+      </div>
+    </section>
+
+    <!-- ===== SECTION 7 — CONDITIONALS ===== -->
+    <section class="section-page" data-sec="7" hidden>
+      <div class="kicker">Section 7 · Making decisions</div>
+      <h1>Conditionals (if / elif / else)</h1>
+      <p class="subtitle">Code that chooses a path based on a condition. This is how programs make decisions.</p>
+
+      <h2>The idea</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A bouncer at a club: <em>if</em> you are over 18, let you in; <em>else</em> turn you away. The condition decides which path the code takes.
+      </div>
+      <pre><code>score = 75
+if score &gt;= 90:
+    print("A")
+elif score &gt;= 70:    <span class="cmt"># "else if" — checked only if the first was false</span>
+    print("B")
+else:                <span class="cmt"># runs if NONE of the above were true</span>
+    print("C")
+<span class="out"># B</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">Indentation IS the structure</span>
+        Python uses <strong>indentation</strong> (the spaces) to know what is inside the <code>if</code>. There are no curly braces. Line up your blocks consistently (4 spaces) or you get an error. Exactly <strong>one</strong> branch of an if/elif/else runs.
+      </div>
+      <h2>Truthiness — what counts as "true"</h2>
+      <div class="why">
+        <span class="callout-label">Falsy values (treated as False)</span>
+        <code>0</code>, <code>0.0</code>, <code>""</code> (empty string), <code>[]</code> (empty list), <code>{}</code> (empty dict), and <code>None</code> are all <strong>falsy</strong>. Everything else is <strong>truthy</strong>. So <code>if my_list:</code> means "if the list is not empty".
+      </div>
+      <pre><code>age = 20
+status = "adult" if age &gt;= 18 else "minor"   <span class="cmt"># one-line if/else (ternary)</span></code></pre>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py7"></div>
+
+      <h2>🧠 Quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"With x = 3, does the block under  if x &gt; 5:  run?","options":["Yes","No"],"answer":1,"why":"3 is not greater than 5, so the condition is False and the block is skipped."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  elif  mean?","options":["End of loop","Else if — another condition checked if the previous was false","Always runs","A type of loop"],"answer":1,"why":"elif checks a new condition only when the earlier ones were false."}'></div>
+      <div class="quiz" data-quiz='{"q":"When does the  else  block run?","options":["Always","When all the if/elif conditions were false","Never","Only with a loop"],"answer":1,"why":"else is the fallback when nothing above matched."}'></div>
+      <div class="quiz" data-quiz='{"q":"How does Python know what is inside an if?","options":["Curly braces { }","Indentation (spaces)","Semicolons","The end keyword"],"answer":1,"why":"Python uses indentation to define blocks."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is the number 0 truthy or falsy?","options":["Truthy","Falsy"],"answer":1,"why":"0 is falsy, so  if 0:  does not run its block."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is an empty string falsy?","options":["Yes","No"],"answer":0,"why":"An empty string is falsy; a non-empty string is truthy."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is an empty list  []  falsy?","options":["Yes","No"],"answer":0,"why":"Empty collections are falsy. So  if my_list:  means the list has items."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is the string  \"hello\"  truthy?","options":["Yes","No"],"answer":0,"why":"Any non-empty string is truthy."}'></div>
+      <div class="quiz" data-quiz='{"q":"How many branches of an if/elif/else run?","options":["All of them","At most one","Exactly two","None"],"answer":1,"why":"Python runs the first matching branch and skips the rest."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  \"adult\" if age &gt;= 18 else \"minor\"  do?","options":["Always gives adult","Gives adult if age &gt;= 18, else minor","Raises an error","Loops"],"answer":1,"why":"This is the ternary (one-line) if/else expression."}'></div>
+      <div class="quiz" data-quiz='{"q":"For  if a and b:  to run, what is needed?","options":["Either a or b true","Both a and b true","Only a true","Neither"],"answer":1,"why":"and requires both sides to be true."}'></div>
+      <div class="quiz" data-quiz='{"q":"With x = 3, what is  not (x &gt; 5)  ?","options":["True","False"],"answer":0,"why":"x &gt; 5 is False; not flips it to True."}'></div>
+      <div class="quiz" data-quiz='{"q":"Inside an  if , which checks equality?","options":["=","==","=>","is="],"answer":1,"why":"== compares; a single = stores a value (and is an error in an if)."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can you put an if inside another if?","options":["Yes (nested conditions)","No","Only with elif","Only inside a loop"],"answer":0,"why":"Conditions can be nested — just indent the inner one further."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Even or odd message</span><span class="arrow">＋</span></summary><div class="pbody"><p>Print "even" if n is even, otherwise "odd".</p><details class="sol"><summary>Show answer</summary><pre><code>if n % 2 == 0:
+    print("even")
+else:
+    print("odd")</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Bigger of two</span><span class="arrow">＋</span></summary><div class="pbody"><p>Given a and b, print the larger one (without using max).</p><details class="sol"><summary>Show answer</summary><pre><code>if a &gt; b:
+    print(a)
+else:
+    print(b)</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="7">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p7a"><input type="checkbox"><label>I can write if / elif / else with correct indentation</label></li>
+        <li data-id="p7b"><input type="checkbox"><label>I know which values are falsy (0, "", [], None)</label></li>
+        <li data-id="p7c"><input type="checkbox"><label>I know only one branch runs</label></li>
+        <li data-id="p7d"><input type="checkbox"><label>I can combine conditions with and / or / not</label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="5">← Back</button><button data-go="7">Next: Tuples →</button></div>
+    </section>
+
+    <!-- ===== SECTION 8 — TUPLES ===== -->
+    <section class="section-page" data-sec="8" hidden>
+      <div class="kicker">Section 8 · Fixed collections</div>
+      <h1>Tuples</h1>
+      <p class="subtitle">A tuple is like a list that can never change — perfect for fixed records and returning several values at once.</p>
+
+      <h2>The idea</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A tuple is a <strong>sealed envelope</strong>: coordinates <code>(3, 7)</code> or a date <code>(26, 6, 2026)</code> — a fixed group of values that belong together and should not be edited.
+      </div>
+      <pre><code>point = (3, 7)        <span class="cmt"># a tuple, made with parentheses</span>
+point[0]              <span class="out"># 3   (index like a list)</span>
+len(point)            <span class="out"># 2</span>
+point[0] = 9          <span class="out"># ERROR — tuples are immutable</span>
+single = (5,)         <span class="cmt"># a one-item tuple NEEDS the comma</span></code></pre>
+      <h2>Unpacking — the real superpower</h2>
+      <pre><code>x, y = (3, 7)         <span class="cmt"># x = 3, y = 7  (unpacking)</span>
+a, b = 1, 2
+a, b = b, a           <span class="cmt"># swap in one clean line!</span></code></pre>
+      <div class="why">
+        <span class="callout-label">Where you will meet tuples</span>
+        Functions return several values as a tuple (<code>return x, y</code>). Looping <code>for k, v in d.items()</code> unpacks tuples. And because they are immutable, tuples can be used as dictionary keys (lists cannot).
+      </div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py8"></div>
+
+      <h2>🧠 Quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"How do you create a tuple?","options":["[ ]","( )","{ }","&lt; &gt;"],"answer":1,"why":"Tuples use parentheses, e.g. (3, 7)."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can you change an item in a tuple?","options":["Yes","No — tuples are immutable"],"answer":1,"why":"Tuples cannot be edited after creation."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  (1, 2, 3)[0] ?","options":["1","2","3","Error"],"answer":0,"why":"Index 0 is the first item, 1."}'></div>
+      <div class="quiz" data-quiz='{"q":"After  a, b = (1, 2)  what is b?","options":["1","2","(1, 2)","Error"],"answer":1,"why":"Unpacking gives a = 1 and b = 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"Main difference between a tuple and a list?","options":["Tuples hold more items","Tuples are immutable, lists are mutable","Lists cannot be indexed","No difference"],"answer":1,"why":"The key difference is mutability."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you write a tuple with ONE item?","options":["(5)","(5,)","[5]","{5}"],"answer":1,"why":"(5) is just the number 5. You need the comma: (5,)."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can a tuple be used as a dictionary key?","options":["Yes","No"],"answer":0,"why":"Tuples are immutable, so they can be dict keys. Lists cannot."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  len((1, 2, 3)) ?","options":["2","3","1","Error"],"answer":1,"why":"Three items, length 3."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you swap a and b in one line?","options":["a = b; b = a","a, b = b, a","swap(a, b)","a == b"],"answer":1,"why":"a, b = b, a uses tuple unpacking to swap cleanly."}'></div>
+      <div class="quiz" data-quiz='{"q":"Are tuples ordered (do they keep position)?","options":["Yes","No"],"answer":0,"why":"Tuples keep their order, like lists."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  (1, 2) + (3,) ?","options":["(1, 2, 3)","(1, 2)(3)","6","Error"],"answer":0,"why":"+ joins tuples into a new tuple."}'></div>
+      <div class="quiz" data-quiz='{"q":"How does a function return two values?","options":["return a and b","return a, b","return [a][b]","It cannot"],"answer":1,"why":"return a, b returns them packed in a tuple, which you can unpack."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Swap two variables</span><span class="arrow">＋</span></summary><div class="pbody"><p>Given a = 10, b = 20, swap them so a = 20, b = 10.</p><details class="sol"><summary>Show answer</summary><pre><code>a, b = 10, 20
+a, b = b, a
+print(a, b)   # 20 10</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Return two values</span><span class="arrow">＋</span></summary><div class="pbody"><p>Write a function that returns both the min and max of two numbers.</p><details class="sol"><summary>Show answer</summary><pre><code>def min_max(a, b):
+    return min(a, b), max(a, b)
+low, high = min_max(8, 3)
+print(low, high)   # 3 8</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="8">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p8a"><input type="checkbox"><label>I can create and index a tuple</label></li>
+        <li data-id="p8b"><input type="checkbox"><label>I know tuples are immutable (unlike lists)</label></li>
+        <li data-id="p8c"><input type="checkbox"><label>I can unpack and swap with tuples</label></li>
+        <li data-id="p8d"><input type="checkbox"><label>I know a function can return several values as a tuple</label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="6">← Back</button><button data-go="8">Next: Sets →</button></div>
+    </section>
+
+    <!-- ===== SECTION 9 — SETS ===== -->
+    <section class="section-page" data-sec="9" hidden>
+      <div class="kicker">Section 9 · Unique collections</div>
+      <h1>Sets</h1>
+      <p class="subtitle">A set is a bag of <strong>unique</strong> items with no order — perfect for removing duplicates and lightning-fast "have I seen this?" checks.</p>
+
+      <h2>The idea</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A guest list where each name can appear only <strong>once</strong>. Add a duplicate and nothing happens — it is already there. There is no "first" or "second" guest; order does not matter.
+      </div>
+      <pre><code>seen = set()          <span class="cmt"># empty set (NOT {} — that is a dict!)</span>
+seen.add(3)
+seen.add(3)           <span class="cmt"># ignored — already present</span>
+print(seen)           <span class="out"># {3}</span>
+3 in seen             <span class="out"># True — membership check is O(1), super fast</span>
+set([1, 1, 2, 3])     <span class="out"># {1, 2, 3}  — duplicates removed instantly</span></code></pre>
+      <div class="why">
+        <span class="callout-label">The two killer uses</span>
+        (1) <strong>Remove duplicates</strong> from a list: <code>set(my_list)</code>. (2) <strong>Fast membership</strong>: checking <code>x in a_set</code> is O(1), versus O(n) for a list. This is the same idea behind hash maps in the DSA tab.
+      </div>
+      <pre><code>{1, 2} | {2, 3}   <span class="out"># {1, 2, 3}  union (everything)</span>
+{1, 2} &amp; {2, 3}   <span class="out"># {2}        intersection (common)</span>
+{1, 2, 3} - {2}   <span class="out"># {1, 3}     difference</span></code></pre>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py9"></div>
+
+      <h2>🧠 Quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"Does a set keep duplicate values?","options":["Yes","No — only unique values"],"answer":1,"why":"Sets automatically drop duplicates."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you make an EMPTY set?","options":["{ }","set()","[ ]","( )"],"answer":1,"why":"{} makes an empty dict. Use set() for an empty set."}'></div>
+      <div class="quiz" data-quiz='{"q":"How many items are in  {1, 2, 2, 3} ?","options":["4","3","2","1"],"answer":1,"why":"The duplicate 2 is dropped, leaving 1, 2, 3 — three items."}'></div>
+      <div class="quiz" data-quiz='{"q":"Do sets keep their items in order?","options":["Yes, always","No guaranteed order"],"answer":1,"why":"Sets are unordered; do not rely on position."}'></div>
+      <div class="quiz" data-quiz='{"q":"How fast is  x in a_set  on average?","options":["O(n)","O(1)","O(log n)","O(n^2)"],"answer":1,"why":"Set membership is roughly instant, O(1)."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you add an item to a set s?","options":["s.append(x)","s.add(x)","s.insert(x)","s.push(x)"],"answer":1,"why":"Sets use .add()."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  set([1, 1, 2]) ?","options":["[1, 1, 2]","{1, 2}","{1, 1, 2}","Error"],"answer":1,"why":"Converting a list to a set removes duplicates."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  {1, 2} | {2, 3}  (union)?","options":["{2}","{1, 2, 3}","{1, 3}","{1, 2, 2, 3}"],"answer":1,"why":"Union is everything from both sets, uniques only."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  {1, 2} &amp; {2, 3}  (intersection)?","options":["{1, 2, 3}","{2}","{1, 3}","{ }"],"answer":1,"why":"Intersection is the common element, 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"Fastest way to remove duplicates from a list?","options":["A loop with if","set(my_list)","sort it","reverse it"],"answer":1,"why":"Converting to a set drops duplicates in one step."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  {1, 2, 3} - {2} ?","options":["{2}","{1, 3}","{1, 2, 3}","{ }"],"answer":1,"why":"Difference removes the items in the second set."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  {}  create?","options":["An empty set","An empty dict","An empty list","An error"],"answer":1,"why":"{} is an empty dict. For a set use set()."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Remove duplicates</span><span class="arrow">＋</span></summary><div class="pbody"><p>Given <code>[1, 2, 2, 3, 3, 3]</code>, print the unique values.</p><details class="sol"><summary>Show answer</summary><pre><code>nums = [1, 2, 2, 3, 3, 3]
+print(set(nums))   # {1, 2, 3}</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Common elements</span><span class="arrow">＋</span></summary><div class="pbody"><p>Find values present in BOTH <code>[1,2,3]</code> and <code>[2,3,4]</code>.</p><details class="sol"><summary>Show answer</summary><pre><code>print(set([1,2,3]) &amp; set([2,3,4]))   # {2, 3}</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="9">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p9a"><input type="checkbox"><label>I know a set holds unique, unordered items</label></li>
+        <li data-id="p9b"><input type="checkbox"><label>I can make an empty set with <code>set()</code></label></li>
+        <li data-id="p9c"><input type="checkbox"><label>I can remove duplicates with <code>set(list)</code></label></li>
+        <li data-id="p9d"><input type="checkbox"><label>I know membership in a set is O(1) (fast)</label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="7">← Back</button><button data-go="9">Next: Functions →</button></div>
+    </section>
+
+    <!-- ===== SECTION 10 — FUNCTIONS ===== -->
+    <section class="section-page" data-sec="10" hidden>
+      <div class="kicker">Section 10 · Reusable blocks</div>
+      <h1>Functions</h1>
+      <p class="subtitle">A function is a named recipe: give it inputs, it does steps, and hands back a result. Write once, use anywhere.</p>
+
+      <h2>The idea</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A <strong>coffee machine</strong>: you put in beans and water (the <em>arguments</em>), it runs its steps, and gives back coffee (the <em>return value</em>). You do not rebuild the machine each time — you just use it.
+      </div>
+      <pre><code>def add(a, b):        <span class="cmt"># def names it; a, b are PARAMETERS (inputs)</span>
+    result = a + b
+    return result     <span class="cmt"># hand the answer back to whoever called it</span>
+
+x = add(3, 4)         <span class="cmt"># CALL it with ARGUMENTS 3 and 4</span>
+print(x)              <span class="out"># 7</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">return vs print — the biggest beginner confusion</span>
+        <code>print</code> just <em>shows</em> something on screen. <code>return</code> <em>hands a value back</em> so the rest of your code can use it. A function that prints but does not return gives back <code>None</code> — so <code>x = add(3,4)</code> would be <code>None</code> if <code>add</code> only printed.
+      </div>
+      <h2>Default values &amp; multiple returns</h2>
+      <pre><code>def greet(name, greeting="Hi"):   <span class="cmt"># greeting has a DEFAULT</span>
+    return f"{greeting}, {name}"
+greet("Sam")           <span class="out"># "Hi, Sam"</span>
+greet("Sam", "Hello")  <span class="out"># "Hello, Sam"</span>
+
+def stats(nums):
+    return min(nums), max(nums)   <span class="cmt"># returns a tuple</span>
+low, high = stats([4, 1, 9])      <span class="cmt"># unpack it</span></code></pre>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py10"></div>
+
+      <h2>🧠 Quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"Which keyword defines a function?","options":["func","def","function","define"],"answer":1,"why":"Python uses def."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  return  do?","options":["Prints a value","Hands a value back to the caller","Ends the program","Starts a loop"],"answer":1,"why":"return sends a value back so the caller can use it."}'></div>
+      <div class="quiz" data-quiz='{"q":"Difference between print and return?","options":["They are the same","print shows on screen; return gives a value to use","return is faster","print stops the function"],"answer":1,"why":"print only displays; return provides a usable value."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you CALL a function named  greet ?","options":["greet","call greet","greet()","run greet"],"answer":2,"why":"Add parentheses: greet() (with any arguments inside)."}'></div>
+      <div class="quiz" data-quiz='{"q":"In  def f(x):  what is x ?","options":["The return value","A parameter (an input placeholder)","A loop","Global"],"answer":1,"why":"x is a parameter — it receives the argument you pass in."}'></div>
+      <div class="quiz" data-quiz='{"q":"In  f(3, 4)  the values 3 and 4 are called?","options":["parameters","arguments","returns","defaults"],"answer":1,"why":"The actual values passed in are arguments."}'></div>
+      <div class="quiz" data-quiz='{"q":"In  def f(x=5):  what is x if you call f() with nothing?","options":["0","None","5","Error"],"answer":2,"why":"5 is the default value used when no argument is given."}'></div>
+      <div class="quiz" data-quiz='{"q":"A function with no return statement returns?","options":["0","None","\"\"","Error"],"answer":1,"why":"Without return, a function gives back None."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can a function call another function?","options":["Yes","No"],"answer":0,"why":"Functions can call each other freely."}'></div>
+      <div class="quiz" data-quiz='{"q":"A variable created inside a function is...","options":["Global everywhere","Local — only exists inside that function","A constant","Shared"],"answer":1,"why":"Local variables live only inside the function call."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  return a, b  return?","options":["Only a","A tuple (a, b)","An error","Only b"],"answer":1,"why":"Comma-separated returns are packed into a tuple."}'></div>
+      <div class="quiz" data-quiz='{"q":"Why use functions?","options":["To slow code down","To reuse logic and avoid repetition","They are required by Python","To use more memory"],"answer":1,"why":"Functions let you write logic once and reuse it everywhere."}'></div>
+      <div class="quiz" data-quiz='{"q":"For  def f(a, b):  calling  f(3, 4)  gives?","options":["a=4, b=3","a=3, b=4","a=3, b=3","Error"],"answer":1,"why":"Arguments fill parameters left to right: a=3, b=4."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  *args  let a function accept?","options":["Only one argument","Any number of positional arguments","Only keyword arguments","Nothing"],"answer":1,"why":"*args collects any number of positional arguments into a tuple."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Write add(a, b)</span><span class="arrow">＋</span></summary><div class="pbody"><p>Write a function that returns the sum of two numbers, then print add(3, 4).</p><details class="sol"><summary>Show answer</summary><pre><code>def add(a, b):
+    return a + b
+print(add(3, 4))   # 7</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · is_even(n)</span><span class="arrow">＋</span></summary><div class="pbody"><p>Write a function that returns True if n is even, else False.</p><details class="sol"><summary>Show answer</summary><pre><code>def is_even(n):
+    return n % 2 == 0
+print(is_even(10))   # True</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="10">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p10a"><input type="checkbox"><label>I can define and call a function with parameters</label></li>
+        <li data-id="p10b"><input type="checkbox"><label>I know the difference between <code>print</code> and <code>return</code></label></li>
+        <li data-id="p10c"><input type="checkbox"><label>I can use default parameter values</label></li>
+        <li data-id="p10d"><input type="checkbox"><label>I know a no-return function gives back <code>None</code></label></li>
+      </ul>
+      <div class="pagenav">
+        <button class="ghost" data-go="8">← Back</button>
+        <span style="font-family:-apple-system,sans-serif;font-size:0.85rem;color:var(--ink-soft);align-self:center;">More coming: Comprehensions, Classes →</span>
+      </div>
+      <div class="coming" style="margin-top:1.5rem;">
+        <strong>Next up:</strong> Comprehensions (one-line list/dict building) · Classes &amp; objects (for Frappe). Then you are ready for the <a href="index.html">📘 DSA tab</a>.
       </div>
     </section>
 
@@ -757,6 +1023,38 @@ makeTrace('trace-py5',["counts = {}","for ch in \"aba\":","    counts[ch] = coun
  {line:[2,3],note:"ch = 'b'. get('b', 0) = 0, +1 → store 'b': 1.",vars:{counts:"{a: 1, b: 1}"}},
  {line:[2,3],note:"ch = 'a' again. get('a', 0) = 1, +1 → 'a': 2.",vars:{counts:"{a: 2, b: 1}"}},
  {line:4,note:"print → {a: 2, b: 1}. ✓",vars:{}}]);
+
+/* ---------- New section tracers ---------- */
+makeTrace('trace-py7',["score = 75","if score >= 90:","    grade = \"A\"","elif score >= 70:","    grade = \"B\"","else:","    grade = \"C\"","print(grade)"],[
+ {line:1,note:"score = 75.",vars:{score:75}},
+ {line:2,note:"Is 75 >= 90? No → skip the A block.",vars:{}},
+ {line:4,note:"Is 75 >= 70? Yes!",vars:{}},
+ {line:5,note:"grade = 'B'. The else is skipped — only one branch runs.",vars:{grade:"'B'"}},
+ {line:8,note:"print → B. ✓",vars:{}}]);
+
+makeTrace('trace-py8',["point = (3, 7)","x, y = point","a, b = 1, 2","a, b = b, a","print(x, y, a, b)"],[
+ {line:1,note:"A tuple holding two values.",vars:{point:"(3, 7)"}},
+ {line:2,note:"Unpack: x gets 3, y gets 7.",vars:{x:3,y:7}},
+ {line:3,note:"a = 1, b = 2.",vars:{a:1,b:2}},
+ {line:4,note:"Swap in one line: a, b = b, a → a=2, b=1.",vars:{a:2,b:1}},
+ {line:5,note:"print → 3 7 2 1. ✓",vars:{}}]);
+
+makeTrace('trace-py9',["nums = [1, 2, 2, 3, 1]","seen = set()","for x in nums:","    seen.add(x)","print(seen)"],[
+ {line:[1,2],note:"List has duplicates; start an empty set.",vars:{seen:"set()"}},
+ {line:[3,4],note:"x=1 → add 1.",vars:{seen:"{1}"}},
+ {line:[3,4],note:"x=2 → add 2.",vars:{seen:"{1, 2}"}},
+ {line:[3,4],note:"x=2 again → no change (sets keep uniques).",vars:{seen:"{1, 2}"}},
+ {line:[3,4],note:"x=3 → add 3.",vars:{seen:"{1, 2, 3}"}},
+ {line:[3,4],note:"x=1 again → no change.",vars:{seen:"{1, 2, 3}"}},
+ {line:5,note:"print → {1, 2, 3}. Duplicates gone. ✓",vars:{}}]);
+
+makeTrace('trace-py10',["def add(a, b):","    result = a + b","    return result","x = add(3, 4)","print(x)"],[
+ {line:4,note:"Call add(3, 4). Jump INTO the function.",vars:{}},
+ {line:1,note:"The arguments fill the parameters: a=3, b=4.",vars:{a:3,b:4}},
+ {line:2,note:"result = 3 + 4 = 7.",vars:{result:7}},
+ {line:3,note:"return 7 — hand the answer back to the caller.",vars:{}},
+ {line:4,note:"x receives the returned 7.",vars:{x:7}},
+ {line:5,note:"print → 7. ✓",vars:{}}]);
 
 /* ---------- Loop tracer ---------- */
 makeTrace('trace-loop',[

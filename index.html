@@ -17,6 +17,10 @@ a:hover{border-bottom-color:var(--accent);}
 
 .topbar{position:sticky;top:0;z-index:50;background:rgba(253,252,248,0.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);}
 .topbar .inner{padding:0.7rem 1.25rem;}
+.tabs{display:flex;gap:0.5rem;margin-bottom:0.5rem;}
+.tab{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:0.84rem;font-weight:700;padding:0.35rem 0.9rem;border-radius:8px 8px 0 0;border:1px solid var(--rule);border-bottom:none;background:#efeadf;color:var(--ink-soft);}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tab:hover{filter:brightness(1.05);}
 .topbar .row{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;}
 .topbar .title{font-weight:700;font-size:0.95rem;}
 .topbar .pct{font-size:0.8rem;color:var(--ink-soft);white-space:nowrap;}
@@ -24,7 +28,7 @@ a:hover{border-bottom-color:var(--accent);}
 .bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent-2),var(--good));transition:width 0.3s;}
 
 .layout{display:flex;max-width:1180px;margin:0 auto;align-items:flex-start;}
-.sidebar{flex:none;width:252px;position:sticky;top:64px;padding:1.4rem 0.8rem;font-family:-apple-system,sans-serif;}
+.sidebar{flex:none;width:252px;position:sticky;top:96px;padding:1.4rem 0.8rem;font-family:-apple-system,sans-serif;}
 .sidebar h4{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0.6rem 0.6rem;}
 .navitem{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.6rem 0.7rem;border-radius:9px;cursor:pointer;font-size:0.88rem;margin-bottom:0.2rem;border:1px solid transparent;}
 .navitem:hover{background:#f3efe6;}
@@ -146,6 +150,10 @@ details.sol[open]>summary::before{content:"▾ ";}
 
 <div class="topbar">
   <div class="inner">
+    <div class="tabs">
+      <a class="tab" href="python.html">🐍 Python Fundamentals</a>
+      <a class="tab active" href="index.html">📘 DSA</a>
+    </div>
     <div class="row">
       <span class="title">📘 DSA for the Frappe Interview</span>
       <span style="display:flex;gap:0.6rem;align-items:center;">
@@ -160,6 +168,8 @@ details.sol[open]>summary::before{content:"▾ ";}
 <div class="layout">
   <nav class="sidebar" id="sidebar">
     <h4>Sections</h4>
+    <div class="navitem" data-go="12" style="background:#fff3c4;border:1px solid var(--accent);"><span>🧭 START HERE · Which Tool &amp; Why</span><span class="mini">read 1st</span></div>
+    <div class="navitem" data-go="13" style="background:#eef4f4;"><span>🎯 Your Interview Qs (worked)</span><span class="mini">3 Q</span></div>
     <div class="navitem" data-go="0"><span>1 · Foundations: Thinking &amp; Speed</span><span class="mini" data-mini="1">0/0</span></div>
     <div class="navitem" data-go="1"><span>2 · Arrays, Hash Maps &amp; Strings</span><span class="mini" data-mini="2">0/0</span></div>
     <div class="navitem" data-go="2"><span>3 · Two Pointers</span><span class="mini" data-mini="3">0/0</span></div>
@@ -2804,6 +2814,216 @@ def level_order(root):
       </div>
     </section>
 
+    <!-- ===== START HERE — DECISION / CONCEPT CLARITY ===== -->
+    <section class="section-page" data-sec="0" hidden>
+      <div class="kicker">🧭 Start Here · Concept Clarity</div>
+      <h1>Which Tool, When &amp; Why</h1>
+      <p class="subtitle">The skill nobody teaches: looking at a brand-new problem and <em>knowing</em> which technique to reach for, and why. Read this first, slowly. Plain language, real-life pictures, step by step.</p>
+
+      <div class="why">
+        <span class="callout-label">Read this before anything else</span>
+        If you freeze on a new problem and cannot decide which technique to use — that is <strong>not</strong> a sign you are bad at this. It means you were shown <em>solutions</em> without being taught the <em>decision</em> behind them. That decision is a skill, like riding a bike. This page teaches exactly that skill. Reread it as many times as you need; it <em>will</em> click.
+      </div>
+
+      <h2>Step 0 — Every problem is the same shape</h2>
+      <p>Almost every interview problem is really saying three things:</p>
+      <p style="font-size:1.05rem;text-align:center;background:#f0f4ef;border-radius:8px;padding:0.8rem;font-family:-apple-system,sans-serif;">
+        "Here is some <strong>data</strong> → give me an <strong>answer</strong> about it → and do it <strong>fast</strong>."
+      </p>
+      <p>Your job has two halves: (1) the obvious slow way (the <strong>brute force</strong>), and (2) a faster way using the <strong>right tool</strong>. The entire game is <strong>matching the clues in the problem to the right tool.</strong> The interviewer is testing whether you can read those clues — nothing more magical than that.</p>
+
+      <h2>The 4 questions to ask EVERY time</h2>
+      <p>Before writing any code, say these four out loud. They walk you straight to the right tool:</p>
+      <table>
+        <tr><th>#</th><th>Ask yourself</th><th>Why it helps</th></tr>
+        <tr><td><strong>1</strong></td><td>What is the <strong>data</strong>? (array? sorted array? string? linked list? tree? graph? plain numbers?)</td><td>The data type already rules out half the tools.</td></tr>
+        <tr><td><strong>2</strong></td><td>What is it <strong>asking</strong>? (a pair? a contiguous run? shortest path? does X exist? all combinations? how many ways?)</td><td>The question shape points at a specific tool.</td></tr>
+        <tr><td><strong>3</strong></td><td>What is the <strong>brute force</strong>, and what is <strong>slow</strong> about it? (usually a loop inside a loop = O(n²))</td><td>Naming the slow part tells you what to remove.</td></tr>
+        <tr><td><strong>4</strong></td><td>Which <strong>tool removes</strong> the slow part?</td><td>Use the Decision Map below to match the clue → tool.</td></tr>
+      </table>
+
+      <h2>The 3 tools beginners mix up the most</h2>
+      <p>Get these three crystal clear and most of your confusion disappears.</p>
+
+      <h3>🗝️ Hash map (Python <code>dict</code> / <code>set</code>)</h3>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A <strong>phone book</strong>. You know the name (the <em>key</em>) and instantly get the number (the <em>value</em>) — you do NOT read every page. Or a coat-check: hand over the ticket, get your exact coat back in one step.
+      </div>
+      <p><strong>What it is, plainly:</strong> a box that stores <em>key → value</em> pairs and hands you the value in <strong>one step</strong> when you give the key. No scanning.</p>
+      <p><strong>The tell — reach for it when you keep wanting to ask:</strong></p>
+      <ul style="font-family:-apple-system,sans-serif;font-size:0.95rem;">
+        <li>"Have I <strong>seen</strong> this value before?"</li>
+        <li>"<strong>How many times</strong> does this appear?" (counting / frequency)</li>
+        <li>"What was the <strong>index</strong> of this thing?"</li>
+        <li>"Does the <strong>partner</strong> I need exist?"</li>
+      </ul>
+      <div class="gotcha">
+        <span class="callout-label">The giveaway</span>
+        If you are about to write a <strong>loop inside a loop</strong> just to <em>find</em> or <em>count</em> something → stop and use a hash map. It turns that inner search from O(n) into O(1), so the whole thing drops from O(n²) to O(n).
+      </div>
+
+      <h3>↔️ Two pointers</h3>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        Two friends closing a book from <strong>both ends</strong>, walking toward the middle. Or zipping a jacket — two sides meeting.
+      </div>
+      <p><strong>What it is, plainly:</strong> two index markers moving through the data — usually one from the left and one from the right, moving toward each other (sometimes one slow, one fast).</p>
+      <p><strong>The tell:</strong></p>
+      <ul style="font-family:-apple-system,sans-serif;font-size:0.95rem;">
+        <li>The array is <strong>SORTED</strong> and you want a <strong>pair</strong> (or triplet) that meets a condition.</li>
+        <li>You compare from <strong>both ends</strong> (palindrome, reversing).</li>
+        <li>You must do it <strong>in place</strong>, no extra memory.</li>
+      </ul>
+      <p><strong>Why it works (plain):</strong> because it is sorted, moving the left pointer right makes the sum <em>bigger</em>, moving the right pointer left makes it <em>smaller</em> — so you always know which one to move. You never try every pair.</p>
+
+      <h3>🪟 Sliding window</h3>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        Looking out of a <strong>moving train window</strong> — you see a fixed group of seats; as the train rolls one seat forward, one new seat enters your view and one leaves. You never re-count all of them.
+      </div>
+      <p><strong>What it is, plainly:</strong> a contiguous <strong>range</strong> [left…right] that grows and shrinks as you slide along, <em>reusing</em> work instead of recomputing.</p>
+      <p><strong>The tell — these WORDS in the problem:</strong> "longest / shortest / maximum / minimum" combined with "<strong>contiguous</strong>", "<strong>subarray</strong>", "<strong>substring</strong>", "consecutive", or "window of size k".</p>
+
+      <div class="gotcha">
+        <span class="callout-label">Two pointers vs sliding window — the confusion, settled</span>
+        Both use two indices, so they feel the same. Tell them apart by the <strong>question</strong>:<br>
+        • Looking for a <strong>PAIR / two things</strong> (usually on sorted data)? → <strong>two pointers</strong> (they meet in the middle).<br>
+        • Looking for the best <strong>CONTIGUOUS run</strong> (subarray/substring)? → <strong>sliding window</strong> (a frame that slides, both indices move left-to-right).<br>
+        Memory hook: <em>two pointers = "meet in the middle"; sliding window = "a frame that slides."</em>
+      </div>
+
+      <h2>🗺️ The Decision Map — clue → tool → why</h2>
+      <p>This is the table to burn into your memory. Read a problem, find the matching clue, reach for that tool.</p>
+      <table>
+        <tr><th>When you see / need…</th><th>Reach for</th><th>Because (plain)</th></tr>
+        <tr><td>"Have I seen this?" / count things / find a partner — <em>unsorted</em></td><td><strong>Hash map</strong></td><td>instant lookup, kills the inner loop</td></tr>
+        <tr><td><em>Sorted</em> array + a pair/triplet, or compare from both ends</td><td><strong>Two pointers</strong></td><td>order tells you which side to move</td></tr>
+        <tr><td>Longest/shortest <strong>contiguous</strong> subarray or substring</td><td><strong>Sliding window</strong></td><td>reuse the window, do not recompute</td></tr>
+        <tr><td>Matching/nesting brackets, "most recent first", next greater element</td><td><strong>Stack</strong> (LIFO)</td><td>the last thing in must come out first</td></tr>
+        <tr><td>Process in arrival order, <strong>shortest path</strong>, level by level</td><td><strong>Queue / BFS</strong></td><td>explores fairly, by distance</td></tr>
+        <tr><td><em>Sorted</em> + "does X exist", or "smallest value that works"</td><td><strong>Binary search</strong></td><td>halves the search every step</td></tr>
+        <tr><td>A <strong>tree</strong> or <strong>graph</strong>, or a smaller copy of the same problem</td><td><strong>Recursion / DFS</strong></td><td>the problem repeats inside itself</td></tr>
+        <tr><td>All <strong>subsets / permutations / combinations</strong> / paths</td><td><strong>Backtracking</strong></td><td>choose → explore → un-choose</td></tr>
+        <tr><td>"How many <strong>ways</strong>", min cost, overlapping subproblems</td><td><strong>Dynamic programming</strong></td><td>cache and reuse sub-answers</td></tr>
+        <tr><td>"Top K", or a running smallest/largest</td><td><strong>Heap</strong></td><td>keeps the K best cheaply</td></tr>
+      </table>
+
+      <h2>👀 Watch the decision happen — a worked example</h2>
+      <p><strong>Problem:</strong> "Given an array of numbers and a target, find two numbers that add up to the target."</p>
+      <p>Walk the 4 questions out loud:</p>
+      <table>
+        <tr><td><strong>1. Data?</strong></td><td>An array of numbers — and it is <em>not</em> sorted.</td></tr>
+        <tr><td><strong>2. Asking?</strong></td><td>Find a <strong>pair</strong> that adds to a target.</td></tr>
+        <tr><td><strong>3. Brute force + slow part?</strong></td><td>For each number, loop again to find its partner → loop inside a loop → <strong>O(n²)</strong>. The slow part is the inner search.</td></tr>
+        <tr><td><strong>4. Which tool removes it?</strong></td><td>I keep asking "have I seen the partner (target − x) already?" → that is the hash-map tell. Store seen numbers in a hash map, look up the partner in O(1) → <strong>O(n)</strong>. <em>(If the array WERE sorted, two pointers would also work.)</em></td></tr>
+      </table>
+      <div class="interview">
+        <span class="callout-label">The punchline</span>
+        That four-step reasoning <strong>is the interview answer.</strong> You did not memorise it — you <em>derived</em> it from the clues. Say it out loud exactly like that, and you sound like someone who understands, not someone reciting.
+      </div>
+
+      <h2>🧠 Now you decide — spot the technique</h2>
+      <p>Read each problem and pick the tool. Instant feedback explains the <em>clue</em> you should have spotted. This is the exact skill that froze you in the interview — drill it until it is automatic.</p>
+
+      <div class="quiz" data-quiz='{"q":"Unsorted array — find two numbers that add up to a target.","options":["Sliding window over the array","Hash map — store seen numbers, look up the partner in O(1)","Sort it, then scan every element","Plain nested loops, nothing better"],"answer":1,"why":"Unsorted plus find-a-pair means store seen numbers in a hash map and check if target minus x appeared. O(n)."}'></div>
+      <div class="quiz" data-quiz='{"q":"Find the LONGEST substring with no repeating characters.","options":["Sort the string first","Hash map of the whole string only","Sliding window — grow and shrink a contiguous range","Binary search on the string"],"answer":2,"why":"Longest contiguous substring such that something holds is the classic sliding-window signal."}'></div>
+      <div class="quiz" data-quiz='{"q":"Check whether a string reads the same forwards and backwards.","options":["Two pointers from both ends, moving inward","A queue (FIFO)","A dynamic programming table","A stack"],"answer":0,"why":"Comparing characters from both ends and moving inward is the two-pointer pattern."}'></div>
+      <div class="quiz" data-quiz='{"q":"Find the fewest moves to cross an unweighted maze (shortest path).","options":["DFS deep down one path first","Binary search","BFS — explore level by level with a queue","Greedy sorting"],"answer":2,"why":"Shortest path in an unweighted graph or grid means BFS, which explores by distance using a queue."}'></div>
+      <div class="quiz" data-quiz='{"q":"A SORTED array — quickly check whether a value exists.","options":["Scan every element one by one","Two pointers from both ends","Hash map of all the indices","Binary search — halve the range each step"],"answer":3,"why":"Sorted plus search means binary search, halving the range each step for O(log n)."}'></div>
+      <div class="quiz" data-quiz='{"q":"Validate that brackets like ([]) are correctly opened and closed.","options":["A stack — the last opened must close first","A queue","Two pointers","Sliding window"],"answer":0,"why":"Matching and nesting, where the most recently opened must close first, is LIFO, so use a stack."}'></div>
+      <div class="quiz" data-quiz='{"q":"Count how many times each word appears in a long list.","options":["Two pointers","Hash map — word to its count","Binary search","BFS"],"answer":1,"why":"Counting how many times each item appears is a frequency map, so use a hash map."}'></div>
+      <div class="quiz" data-quiz='{"q":"List every possible subset of a set of items.","options":["Sliding window","Binary search","Backtracking — choose, explore, un-choose","Two pointers"],"answer":2,"why":"Generating every subset or combination is backtracking: choose, recurse, then un-choose."}'></div>
+
+      <div class="interview" style="margin-top:1.6rem;">
+        <span class="callout-label">Your turn — this is how we practise together</span>
+        Bring me <strong>any</strong> problem in the chat. We will not jump to the answer — we will walk the <strong>4 questions</strong> together, out loud, until you can do them on your own. Once you have picked a tool, open its section and step through its tracer to see the mechanics. Concept first, then solving — exactly as you asked. <strong>Ask me anything; I am your teacher.</strong>
+      </div>
+
+      <div class="pagenav">
+        <span></span>
+        <button data-go="0">Start the course → Foundations</button>
+      </div>
+    </section>
+
+    <!-- ===== YOUR REAL INTERVIEW QUESTIONS (worked) ===== -->
+    <section class="section-page" data-sec="rq" hidden>
+      <div class="kicker">🎯 From your actual interview</div>
+      <h1>Your Interview Questions — Worked</h1>
+      <p class="subtitle">The three you were asked, fully worked with the 4-question reasoning and a step-through tracer. Try each yourself first, then reveal and step through the code.</p>
+
+      <div class="why">
+        <span class="callout-label">Notice the link</span>
+        Questions 2 and 3 are a pair: you <strong>sort</strong> so that you can then <strong>search fast</strong>. Interviewers ask them together to see if you spot that "sorted" is the magic word for binary search.
+      </div>
+
+      <!-- Q1 RLE -->
+      <details class="problem" open><summary><span>1 · Convert "aabbccddd" → "a2b2c2d3"</span><span class="tag easy">string</span></summary>
+        <div class="pbody">
+          <p><strong>Run-Length Encoding:</strong> write each letter followed by how many times it repeats in a row.</p>
+          <p style="font-size:0.88rem;"><strong>Deciding (4 questions):</strong> Data = a string with letters grouped together. Asking = letter + run-length. Brute force = none needed, one pass is enough → O(n). Tool = a <strong>single pass with a counter</strong>: track the current letter and how many in a row; when it changes, write <code>letter+count</code> and reset.</p>
+          <pre><code>def encode(s):
+    if not s: return ""
+    result = []
+    count = 1
+    for i in range(1, len(s)):       # compare each char to the one before
+        if s[i] == s[i-1]:
+            count += 1               # same run → keep counting
+        else:
+            result.append(s[i-1] + str(count))   # run ended → record it
+            count = 1
+    result.append(s[-1] + str(count))   # ⚠ write the LAST run (the bit everyone forgets!)
+    return "".join(result)
+# O(n) time, O(n) space</code></pre>
+          <div class="gotcha"><span class="callout-label">The bug that fails people</span>The loop only writes a group when the letter <em>changes</em>. After the final <code>d</code> nothing changes, so the last group must be written <em>after</em> the loop. Forget it and you get <code>a2b2c2</code> — the <code>d3</code> vanishes.</div>
+          <details class="sol"><summary>▶ Step through it</summary><div class="trace" id="trace-rle"></div></details>
+          <div class="interview" style="margin-top:0.8rem;"><span class="callout-label">Talk-track</span><em>"I walk the string once, counting how many times each letter repeats in a row. When the letter changes I append letter-plus-count and reset. I make sure to write the final run after the loop. O(n) time."</em></div>
+        </div>
+      </details>
+
+      <!-- Q2 Sort -->
+      <details class="problem"><summary><span>2 · Sort an array — fastest way</span><span class="tag easy">sorting</span></summary>
+        <div class="pbody">
+          <p><strong>The smart answer:</strong> "In real code I'd use Python's built-in <code>sorted()</code> — it's Timsort, <strong>O(n log n)</strong> and stable. If you want me to name an algorithm: <strong>merge sort</strong> (always O(n log n)) or <strong>quicksort</strong> (average O(n log n))."</p>
+          <p style="font-size:0.88rem;"><strong>The key fact to say:</strong> comparison-based sorting <strong>cannot beat O(n log n)</strong> in general. Only special cases — small bounded integers — allow <strong>counting/radix sort</strong> at O(n).</p>
+          <pre><code>arr.sort()            # in place, Timsort, O(n log n)
+nums = sorted(arr)    # returns a new sorted list</code></pre>
+          <p style="font-size:0.85rem;">Below: a tracer of <em>quicksort</em> (a named fast O(n log n) sort) so you can show how one actually works if asked.</p>
+          <details class="sol"><summary>▶ Step through quicksort</summary><div class="trace" id="trace-sort-fast"></div></details>
+          <div class="interview" style="margin-top:0.8rem;"><span class="callout-label">Talk-track</span><em>"Fastest practical sort is the built-in sorted(), which is Timsort — O(n log n), stable. You can't beat O(n log n) with comparisons; only bounded integers allow an O(n) counting sort."</em></div>
+        </div>
+      </details>
+
+      <!-- Q3 Search -->
+      <details class="problem"><summary><span>3 · Search for an element — fastest way</span><span class="tag easy">search</span></summary>
+        <div class="pbody">
+          <p><strong>First ask the magic question:</strong> "Is the array sorted?" — that one clue decides everything.</p>
+          <table>
+            <tr><th>Situation</th><th>Fastest way</th><th>Cost</th></tr>
+            <tr><td><strong>Sorted</strong> array</td><td>Binary search (halve the range)</td><td><strong>O(log n)</strong></td></tr>
+            <tr><td>Unsorted, search once</td><td>Scan every element</td><td>O(n)</td></tr>
+            <tr><td>Unsorted, search many times</td><td>Build a hash set once, then look up</td><td>O(n) build, <strong>O(1)</strong> each</td></tr>
+          </table>
+          <pre><code>def binary_search(nums, target):   # nums must be SORTED
+    lo, hi = 0, len(nums)-1
+    while lo <= hi:
+        mid = (lo+hi)//2
+        if nums[mid] == target: return mid
+        elif nums[mid] < target: lo = mid+1
+        else: hi = mid-1
+    return -1
+# O(log n) time</code></pre>
+          <details class="sol"><summary>▶ Step through binary search</summary><div class="trace" id="trace-search-fast"></div></details>
+          <div class="interview" style="margin-top:0.8rem;"><span class="callout-label">Talk-track</span><em>"If it's sorted, binary search — O(log n). If unsorted and I search once, I must scan — O(n). If I'll search many times, I build a hash set once, then each lookup is O(1)."</em></div>
+        </div>
+      </details>
+
+      <div class="pagenav">
+        <button class="ghost" data-go="12">← Back: Which Tool &amp; Why</button>
+        <button data-go="0">Start the course →</button>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -2832,12 +3052,14 @@ function makeTrace(id, code, steps){
   const ctrl=document.createElement('div'); ctrl.className='ctrl';
   const prev=document.createElement('button'); prev.className='ghost'; prev.textContent='◀ Prev';
   const next=document.createElement('button'); next.textContent='Next ▶';
+  const play=document.createElement('button'); play.textContent='▶ Play';
   const reset=document.createElement('button'); reset.className='ghost'; reset.textContent='⟲';
   const stepN=document.createElement('span'); stepN.className='step-n';
-  ctrl.append(prev,next,reset,stepN);
+  ctrl.append(prev,next,play,reset,stepN);
   root.append(ctrl,codeWrap,panel);
 
-  let cur=-1;
+  let cur=-1,timer=null;
+  function stop(){if(timer){clearInterval(timer);timer=null;play.textContent='▶ Play';}}
   function render(){
     const lines=[...codeWrap.querySelectorAll('.tline')];
     lines.forEach(l=>l.classList.remove('on'));
@@ -2852,9 +3074,10 @@ function makeTrace(id, code, steps){
     }
     prev.disabled=cur<0; next.disabled=cur>=steps.length-1;
   }
-  next.onclick=()=>{if(cur<steps.length-1){cur++;render();}};
-  prev.onclick=()=>{if(cur>=0){cur--;render();}};
-  reset.onclick=()=>{cur=-1;render();};
+  next.onclick=()=>{stop();if(cur<steps.length-1){cur++;render();}};
+  prev.onclick=()=>{stop();if(cur>=0){cur--;render();}};
+  reset.onclick=()=>{stop();cur=-1;render();};
+  play.onclick=()=>{if(timer){stop();return;}play.textContent='⏸ Pause';timer=setInterval(()=>{if(cur>=steps.length-1){stop();return;}cur++;render();},1100);};
   render();
 }
 
@@ -4902,6 +5125,35 @@ makeTrace('trace-d30',["def climb(n):  # n=5 (it is Fibonacci!)","    a, b = 1, 
  {line:4,note:"step 4: a=5, b=8.",vars:{a:5,b:8}},
  {line:4,note:"step 5: a=8, b=13.",vars:{a:8,b:13}},
  {line:5,note:"Return a = 8 ways. ✓",vars:{result:8}}]);
+
+/* ===== YOUR INTERVIEW QUESTIONS tracers ===== */
+makeTrace('trace-rle',["def encode(s):              # s = 'aabbccddd'","    result = []","    count = 1","    for i in range(1, len(s)):","        if s[i] == s[i-1]:","            count += 1","        else:","            result.append(s[i-1] + str(count))","            count = 1","    result.append(s[-1] + str(count))","    return ''.join(result)"],[
+ {line:[2,3],note:"result empty, count=1 (the first char is already counted).",vars:{count:1,result:"[]"}},
+ {line:[5,6],note:"i=1: 'a' == 'a' → count=2.",vars:{count:2}},
+ {line:[7,8,9],note:"i=2: 'b' != 'a' → write 'a2', reset count=1.",vars:{result:"[a2]",count:1}},
+ {line:[5,6],note:"i=3: 'b' == 'b' → count=2.",vars:{count:2}},
+ {line:[7,8,9],note:"i=4: 'c' != 'b' → write 'b2', reset.",vars:{result:"[a2, b2]",count:1}},
+ {line:[5,6],note:"i=5: 'c' == 'c' → count=2.",vars:{count:2}},
+ {line:[7,8,9],note:"i=6: 'd' != 'c' → write 'c2', reset.",vars:{result:"[a2, b2, c2]",count:1}},
+ {line:[5,6],note:"i=7: 'd' == 'd' → count=2.",vars:{count:2}},
+ {line:[5,6],note:"i=8: 'd' == 'd' → count=3.",vars:{count:3}},
+ {line:10,note:"Loop ends → write the LAST run 'd3' (the step everyone forgets!).",vars:{result:"[a2, b2, c2, d3]"}},
+ {line:11,note:"Join → 'a2b2c2d3'. ✓",vars:{result:"a2b2c2d3"}}]);
+
+makeTrace('trace-sort-fast',["def quick_sort(arr):        # [3, 1, 2]  (a fast O(n log n) sort)","    if len(arr) <= 1: return arr","    pivot = arr[-1]","    smaller = [x for x in arr[:-1] if x <= pivot]","    bigger  = [x for x in arr[:-1] if x >  pivot]","    return quick_sort(smaller) + [pivot] + quick_sort(bigger)"],[
+ {line:3,note:"[3,1,2]: pivot = 2 (last element).",vars:{pivot:2}},
+ {line:[4,5],note:"smaller (<=2) = [1]; bigger (>2) = [3].",vars:{smaller:"[1]",bigger:"[3]"}},
+ {line:6,note:"Recurse: sort([1]) + [2] + sort([3]).",vars:{}},
+ {line:2,note:"[1] and [3] are length 1 → already sorted (base case).",vars:{}},
+ {line:6,note:"Combine → [1] + [2] + [3] = [1, 2, 3]. ✓ Average O(n log n).",vars:{result:"[1, 2, 3]"}}]);
+
+makeTrace('trace-search-fast',["def binary_search(nums, target):   # sorted [1,3,5,7,9,11], t=7","    lo, hi = 0, len(nums)-1","    while lo <= hi:","        mid = (lo+hi)//2","        if nums[mid] == target: return mid","        elif nums[mid] < target: lo = mid+1","        else: hi = mid-1","    return -1"],[
+ {line:2,note:"Works ONLY because the array is sorted. Search the whole range.",vars:{lo:0,hi:5}},
+ {line:4,note:"mid=2, nums[2]=5.",vars:{mid:2}},
+ {line:6,note:"5 < 7 → discard the left half, lo=3.",vars:{lo:3}},
+ {line:4,note:"mid=4, nums[4]=9.",vars:{mid:4}},
+ {line:7,note:"9 > 7 → discard the right half, hi=3.",vars:{hi:3}},
+ {line:[4,5],note:"mid=3, nums[3]=7 → found at index 3. ✓ O(log n).",vars:{result:3}}]);
 
 /* ---------- Section navigation ---------- */
 const pages=[...document.querySelectorAll('.section-page')];

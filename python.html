@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Fundamentals</title>
+<style>
+:root{
+  --ink:#1a1a1a; --ink-soft:#555; --paper:#fdfcf8; --rule:#e3ded3;
+  --accent:#2a6b6b; --accent-2:#b5402a; --good:#2f7d4f; --bad:#b5402a;
+  --code-bg:#f4f1e8; --highlight:#cdeae7;
+}
+*{box-sizing:border-box;}
+body{background:var(--paper);color:var(--ink);font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif;line-height:1.6;font-size:18px;margin:0;overflow-x:clip;}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(42,107,107,0.3);}
+a:hover{border-bottom-color:var(--accent);}
+
+.topbar{position:sticky;top:0;z-index:50;background:rgba(253,252,248,0.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);}
+.topbar .inner{padding:0.6rem 1.25rem;}
+.tabs{display:flex;gap:0.5rem;margin-bottom:0.5rem;}
+.tab{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:0.84rem;font-weight:700;padding:0.35rem 0.9rem;border-radius:8px 8px 0 0;border:1px solid var(--rule);border-bottom:none;background:#efeadf;color:var(--ink-soft);}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.tab:hover{filter:brightness(1.05);}
+.topbar .row{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:-apple-system,sans-serif;}
+.topbar .title{font-weight:700;font-size:0.95rem;}
+.topbar .pct{font-size:0.8rem;color:var(--ink-soft);white-space:nowrap;}
+.bar{height:8px;background:#eae5da;border-radius:6px;overflow:hidden;margin-top:0.5rem;}
+.bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--good));transition:width 0.3s;}
+
+.layout{display:flex;max-width:1180px;margin:0 auto;align-items:flex-start;}
+.sidebar{flex:none;width:248px;position:sticky;top:96px;padding:1.4rem 0.8rem;font-family:-apple-system,sans-serif;}
+.sidebar h4{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft);margin:0 0.6rem 0.6rem;}
+.navitem{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.6rem 0.7rem;border-radius:9px;cursor:pointer;font-size:0.88rem;margin-bottom:0.2rem;border:1px solid transparent;}
+.navitem:hover{background:#eef4f4;}
+.navitem.active{background:#fff;border-color:var(--rule);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+.navitem .mini{font-size:0.72rem;color:var(--ink-soft);background:#eee;border-radius:10px;padding:0.05rem 0.45rem;white-space:nowrap;}
+.navitem.complete .mini{background:#e7f3ec;color:var(--good);}
+.navitem.locked{opacity:0.5;cursor:default;}
+.navitem.locked:hover{background:none;}
+
+.content{flex:1;min-width:0;padding:1.5rem 1.6rem 6rem;max-width:820px;}
+
+.kicker{font-family:-apple-system,sans-serif;font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent-2);font-weight:700;margin-bottom:0.3rem;}
+h1{font-size:2rem;line-height:1.14;margin:0.4rem 0 0.3rem;font-weight:700;}
+.subtitle{color:var(--ink-soft);font-style:italic;margin:0 0 1.5rem;}
+h2{font-size:1.3rem;margin:2.2rem 0 0.4rem;padding-bottom:0.3rem;border-bottom:1px solid var(--rule);}
+h3{font-size:1.08rem;margin:1.6rem 0 0.4rem;}
+p{margin:0.8rem 0;}
+
+.analogy,.why,.gotcha,.interview{font-family:-apple-system,sans-serif;font-size:0.92rem;border-radius:8px;padding:0.9rem 1.1rem;margin:1.2rem 0;line-height:1.55;}
+.analogy{background:#eef4f4;border-left:4px solid var(--accent);}
+.why{background:#f0f4ef;border-left:4px solid var(--good);}
+.gotcha{background:#fbeee9;border-left:4px solid var(--accent-2);}
+.interview{background:#1a1a1a;color:#f4f1e8;border-left:4px solid var(--highlight);}
+.interview a{color:var(--highlight);}
+.callout-label{display:block;font-weight:700;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.3rem;opacity:0.85;}
+
+pre,code{font-family:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+code{background:var(--code-bg);padding:0.1em 0.35em;border-radius:4px;font-size:0.85em;}
+pre{background:var(--code-bg);border:1px solid var(--rule);border-radius:8px;padding:1rem 1.2rem;overflow-x:auto;font-size:0.83rem;line-height:1.55;}
+pre code{background:none;padding:0;}
+.cmt{color:#8a8576;font-style:italic;}
+.out{color:var(--accent);font-weight:700;}
+
+table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-family:-apple-system,sans-serif;font-size:0.87rem;}
+th,td{text-align:left;padding:0.5rem 0.7rem;border-bottom:1px solid var(--rule);vertical-align:top;}
+th{font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);}
+
+.widget{font-family:-apple-system,sans-serif;background:#fbfaf6;border:1px solid var(--rule);border-radius:12px;padding:1.2rem;margin:1.4rem 0;}
+button{font-family:-apple-system,sans-serif;font-size:0.86rem;font-weight:600;background:var(--accent);color:#fff;border:none;border-radius:7px;padding:0.45rem 0.95rem;cursor:pointer;}
+button:hover{filter:brightness(1.08);}
+button:disabled{opacity:0.45;cursor:default;filter:none;}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--rule);}
+button.chip{background:#fff;color:var(--ink);border:1px solid var(--rule);font-family:monospace;font-size:0.82rem;margin:0.2rem;}
+.cells{display:flex;gap:0.4rem;flex-wrap:wrap;margin:0.7rem 0;}
+.cell{border:2px solid var(--rule);background:#fff;border-radius:8px;padding:0.45rem 0.6rem;text-align:center;min-width:40px;transition:all 0.15s;}
+.cell .v{font-weight:700;}
+.cell .i{font-size:0.6rem;color:#999;}
+.cell.active{border-color:var(--accent);background:var(--highlight);}
+.cell.good{border-color:var(--good);background:#e7f3ec;}
+.cell.dim{opacity:0.35;}
+.logbox{font-size:0.85rem;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:0.7rem 0.9rem;min-height:3.2em;line-height:1.5;margin:0.6rem 0;}
+
+.trace{font-family:-apple-system,sans-serif;background:#1e1e1e;border-radius:12px;padding:0.5rem 0;margin:1.3rem 0;overflow:hidden;}
+.trace .tcode{margin:0;padding:0.6rem 0;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:0.8rem;line-height:1.75;color:#d6d6cf;background:none;border:none;border-radius:0;}
+.trace .tline{display:flex;padding:0 1rem;white-space:pre;}
+.trace .tline .gut{color:#666;width:2.2em;flex:none;text-align:right;margin-right:1rem;user-select:none;}
+.trace .tline.on{background:rgba(205,234,231,0.16);box-shadow:inset 3px 0 0 var(--highlight);}
+.trace .tline.on .gut{color:var(--highlight);}
+.trace .tcmt{color:#7d8b6a;}
+.trace .panel{background:#262626;padding:0.7rem 1rem;border-top:1px solid #383838;}
+.trace .vars{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.5rem;}
+.trace .vchip{background:#333;border:1px solid #444;border-radius:7px;padding:0.2rem 0.55rem;font-family:"SF Mono",monospace;font-size:0.76rem;color:#e6e6df;}
+.trace .vchip b{color:var(--highlight);font-weight:600;}
+.trace .tnote{color:#cfcfc6;font-size:0.84rem;min-height:1.2em;line-height:1.45;}
+.trace .ctrl{display:flex;gap:0.5rem;align-items:center;padding:0.6rem 1rem 0.3rem;}
+.trace .step-n{color:#888;font-size:0.76rem;margin-left:auto;}
+
+.quiz .q{font-weight:700;margin-bottom:0.6rem;font-family:-apple-system,sans-serif;font-size:0.9rem;}
+.quiz .opt{display:block;width:100%;text-align:left;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:8px;padding:0.6rem 0.9rem;margin:0.3rem 0;cursor:pointer;font-size:0.88rem;font-family:-apple-system,sans-serif;}
+.quiz .opt:hover{background:#f3f8f7;}
+.quiz .opt.correct{background:#e7f3ec;border-color:var(--good);}
+.quiz .opt.wrong{background:#fbeae6;border-color:var(--bad);}
+.quiz .feedback{margin-top:0.5rem;font-size:0.86rem;min-height:1.1em;font-family:-apple-system,sans-serif;}
+.quiz .feedback.correct{color:var(--good);}
+.quiz .feedback.wrong{color:var(--bad);}
+
+details.problem{border:1px solid var(--rule);border-radius:10px;margin:0.7rem 0;background:#fff;overflow:hidden;font-family:-apple-system,sans-serif;}
+details.problem>summary{cursor:pointer;padding:0.8rem 1rem;font-weight:600;font-size:0.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;}
+details.problem>summary::-webkit-details-marker{display:none;}
+details.problem>summary .arrow{color:var(--accent);font-weight:700;}
+details.problem[open]>summary .arrow{transform:rotate(45deg);}
+details.problem>summary:hover{background:#f3f8f7;}
+.pbody{padding:0 1rem 1rem;font-size:0.92rem;}
+details.sol{margin-top:0.7rem;border-top:1px dashed var(--rule);padding-top:0.6rem;}
+details.sol>summary{cursor:pointer;font-weight:600;font-size:0.84rem;color:var(--accent);list-style:none;}
+details.sol>summary::-webkit-details-marker{display:none;}
+details.sol>summary::before{content:"▸ ";}
+details.sol[open]>summary::before{content:"▾ ";}
+
+.checklist{list-style:none;padding:0;margin:1.4rem 0 0;font-family:-apple-system,sans-serif;font-size:0.93rem;border-top:1px solid var(--rule);padding-top:1rem;}
+.checklist .legend{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:0.4rem;}
+.checklist li{display:flex;align-items:flex-start;gap:0.6rem;padding:0.45rem 0.6rem;border-radius:8px;cursor:pointer;}
+.checklist li:hover{background:#f3f8f7;}
+.checklist input{margin-top:0.2rem;width:18px;height:18px;accent-color:var(--good);cursor:pointer;flex:none;}
+.checklist li.done label{color:var(--ink-soft);text-decoration:line-through;}
+
+.pagenav{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;padding-top:1.2rem;border-top:2px solid var(--rule);font-family:-apple-system,sans-serif;}
+.reset{font-family:-apple-system,sans-serif;font-size:0.76rem;color:var(--ink-soft);background:none;border:1px solid var(--rule);padding:0.3rem 0.7rem;}
+.coming{opacity:0.7;font-style:italic;font-family:-apple-system,sans-serif;font-size:0.9rem;line-height:1.7;}
+.menu-toggle{display:none;}
+
+@media(max-width:820px){
+  .layout{flex-direction:column;}
+  .sidebar{position:static;width:100%;padding:0.8rem;border-bottom:1px solid var(--rule);display:none;}
+  .sidebar.open{display:block;}
+  .content{padding:1.2rem 1.1rem 5rem;max-width:100%;}
+  .menu-toggle{display:inline-block;background:#fff;color:var(--ink);border:1px solid var(--rule);font-size:0.8rem;}
+  table{display:block;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <div class="tabs">
+      <a class="tab active" href="python.html">🐍 Python Fundamentals</a>
+      <a class="tab" href="index.html">📘 DSA</a>
+    </div>
+    <div class="row">
+      <span class="title">🐍 Python Fundamentals</span>
+      <span style="display:flex;gap:0.6rem;align-items:center;">
+        <span class="pct" id="pct">0 / 0</span>
+        <button class="menu-toggle" id="menu-toggle">☰ Sections</button>
+      </span>
+    </div>
+    <div class="bar"><div id="barfill"></div></div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <h4>Sections</h4>
+    <div class="navitem" data-go="0"><span>1 · Variables &amp; Data Types</span><span class="mini" data-mini="1">0/0</span></div>
+    <div class="navitem" data-go="1"><span>2 · Numbers &amp; Operators</span><span class="mini" data-mini="2">0/0</span></div>
+    <div class="navitem" data-go="2"><span>3 · Strings</span><span class="mini" data-mini="3">0/0</span></div>
+    <div class="navitem" data-go="3"><span>4 · Lists</span><span class="mini" data-mini="4">0/0</span></div>
+    <div class="navitem" data-go="4"><span>5 · Dictionaries</span><span class="mini" data-mini="5">0/0</span></div>
+    <div class="navitem" data-go="5"><span>6 · Loops</span><span class="mini" data-mini="6">0/0</span></div>
+    <div class="navitem locked" data-go="-1"><span>7+ · Conditionals, Functions…</span><span class="mini">soon</span></div>
+    <div style="margin-top:1.2rem;padding-top:0.8rem;border-top:1px solid var(--rule);">
+      <button class="reset" id="reset-progress">Reset my progress</button>
+    </div>
+  </nav>
+
+  <main class="content">
+
+    <!-- ===== SECTION 1 ===== -->
+    <section class="section-page" data-sec="1">
+      <div class="kicker">Section 1 · The basics</div>
+      <h1>Variables &amp; Data Types</h1>
+      <p class="subtitle">A variable is a labelled box that holds a value. Python figures out the type for you. Let's make that concrete.</p>
+
+      <h2>What is a variable?</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A variable is a <strong>labelled box</strong>. You write a name on the box (<code>age</code>) and put something inside (<code>25</code>). Later you say the name and Python hands you what's inside. You can swap the contents any time.
+      </div>
+      <pre><code>age = 25            <span class="cmt"># a box named "age" holding 25</span>
+name = "Noorain"    <span class="cmt"># a box holding text</span>
+age = 26            <span class="cmt"># swap the contents — totally fine</span>
+print(age)          <span class="out"># 26</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">The one rule</span>
+        <code>=</code> does NOT mean "equals" like in maths. It means "<strong>put the right-hand value into the box on the left</strong>." So <code>x = x + 1</code> reads as "take what's in x, add 1, put it back" — which is why it makes sense.
+      </div>
+
+      <h2>The core data types</h2>
+      <p>A "type" is just <em>what kind of thing</em> is in the box. Python's everyday types:</p>
+      <table>
+        <tr><th>Type</th><th>What it is</th><th>Example</th></tr>
+        <tr><td><code>int</code></td><td>Whole number</td><td><code>42</code>, <code>-7</code></td></tr>
+        <tr><td><code>float</code></td><td>Number with a decimal</td><td><code>3.14</code>, <code>2.0</code></td></tr>
+        <tr><td><code>str</code></td><td>Text (a "string" of characters)</td><td><code>"hello"</code></td></tr>
+        <tr><td><code>bool</code></td><td>True or False</td><td><code>True</code>, <code>False</code></td></tr>
+        <tr><td><code>NoneType</code></td><td>"Nothing here yet"</td><td><code>None</code></td></tr>
+      </table>
+      <pre><code>type(42)        <span class="out"># &lt;class 'int'&gt;</span>
+type(3.14)      <span class="out"># &lt;class 'float'&gt;</span>
+type("hi")      <span class="out"># &lt;class 'str'&gt;</span>
+type(True)      <span class="out"># &lt;class 'bool'&gt;</span></code></pre>
+      <div class="why">
+        <span class="callout-label">Dynamic typing — why Python feels easy</span>
+        Unlike some languages, you never declare the type. Python looks at the value and decides. Put a number in, it's an int; put text in, it's a str. The same box can even hold different types at different times.
+      </div>
+
+      <h2>Converting between types</h2>
+      <p>You often need to turn one type into another — e.g. text <code>"5"</code> into the number <code>5</code>:</p>
+      <pre><code>int("5") + 1      <span class="out"># 6   (text → number)</span>
+str(5) + "!"      <span class="out"># "5!" (number → text)</span>
+float("3.5")      <span class="out"># 3.5</span>
+"5" + 1           <span class="out"># ERROR! can't add text and a number</span></code></pre>
+
+      <div class="quiz" data-quiz='{"q":"What type is the value 3.0 ?","options":["int","float","str","bool"],"answer":1,"why":"The decimal point makes it a float, even though it looks like a whole number."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  x = 5  actually do?","options":["Checks if x equals 5","Puts the value 5 into a box named x","Creates a permanent constant","Prints 5"],"answer":1,"why":"= is assignment: it stores the right-hand value into the variable on the left."}'></div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py1"></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What type is the value 7 ?","options":["int","float","str","bool"],"answer":0,"why":"A whole number with no decimal point is an int."}'></div>
+      <div class="quiz" data-quiz='{"q":"What type is the value 7 written in quotes, like a word?","options":["int","str","float","bool"],"answer":1,"why":"Anything in quotes is text, so it is a str."}'></div>
+      <div class="quiz" data-quiz='{"q":"What type is True ?","options":["str","int","bool","None"],"answer":2,"why":"True and False are the two bool (boolean) values."}'></div>
+      <div class="quiz" data-quiz='{"q":"What type is None ?","options":["bool","NoneType","str","int"],"answer":1,"why":"None is the single value of type NoneType — it means nothing here yet."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is the type of the result of 9 / 2 ?","options":["int","float","str","bool"],"answer":1,"why":"In Python the / operator always gives a float, so 4.5."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does int(\"12\") + 3 give?","options":["15","123","Error","\"123\""],"answer":0,"why":"int(\"12\") turns the text into the number 12, then 12 + 3 = 15."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does str(7) + str(3) give?","options":["10","73","Error","37"],"answer":1,"why":"Both become text, and + glues text together, so 73 as a string."}'></div>
+      <div class="quiz" data-quiz='{"q":"After  x = 10  then  x = x + 5  what is x ?","options":["10","5","15","Error"],"answer":2,"why":"x = x + 5 means take 10, add 5, store 15 back in x."}'></div>
+      <div class="quiz" data-quiz='{"q":"What happens with  \"5\" + 5  ?","options":["10","55","Error — cannot add text and a number","5"],"answer":2,"why":"You cannot add a string and an int. Convert first with int() or str()."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does float(7) give?","options":["7","7.0","\"7\"","Error"],"answer":1,"why":"float() makes it a decimal number: 7.0."}'></div>
+      <div class="quiz" data-quiz='{"q":"Which is a valid variable name?","options":["2age","my age","user_name","class"],"answer":2,"why":"Names use letters, digits and underscores, cannot start with a digit or contain spaces, and class is reserved."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  =  mean in Python?","options":["Checks equality","Stores the right value into the left variable","Prints a value","Compares two numbers"],"answer":1,"why":"= is assignment (store). == is the one that checks equality."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Greet yourself with an f-string</span><span class="arrow">＋</span></summary><div class="pbody"><p>Store your age in a variable and print: <code>I am 26 years old</code> (use your age).</p><details class="sol"><summary>Show answer</summary><pre><code>age = 26
+print(f"I am {age} years old")</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Text to number</span><span class="arrow">＋</span></summary><div class="pbody"><p>You have the text <code>"42"</code>. Turn it into a number and add 8.</p><details class="sol"><summary>Show answer</summary><pre><code>n = int("42")
+print(n + 8)     # 50</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="1">
+        <li class="legend">Tick when you can do it — progress saves automatically</li>
+        <li data-id="p1a"><input type="checkbox"><label>I can explain a variable as a labelled box</label></li>
+        <li data-id="p1b"><input type="checkbox"><label>I know <code>=</code> means "store", not "equals"</label></li>
+        <li data-id="p1c"><input type="checkbox"><label>I can name int, float, str, bool, None</label></li>
+        <li data-id="p1d"><input type="checkbox"><label>I can convert with <code>int()</code>, <code>str()</code>, <code>float()</code></label></li>
+      </ul>
+      <div class="pagenav"><span></span><button data-go="1">Next: Numbers &amp; Operators →</button></div>
+    </section>
+
+    <!-- ===== SECTION 2 ===== -->
+    <section class="section-page" data-sec="2" hidden>
+      <div class="kicker">Section 2 · Doing things with values</div>
+      <h1>Numbers &amp; Operators</h1>
+      <p class="subtitle">Operators are the verbs of Python — they do things to values. Two that trip up beginners: <code>//</code> and <code>%</code>.</p>
+
+      <h2>Arithmetic</h2>
+      <table>
+        <tr><th>Operator</th><th>Means</th><th>Example</th><th>Result</th></tr>
+        <tr><td><code>+ - * /</code></td><td>add, subtract, multiply, divide</td><td><code>7 / 2</code></td><td><code>3.5</code></td></tr>
+        <tr><td><code>//</code></td><td><strong>floor</strong> divide (drop the decimal)</td><td><code>7 // 2</code></td><td><code>3</code></td></tr>
+        <tr><td><code>%</code></td><td><strong>modulo</strong> (the remainder)</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+        <tr><td><code>**</code></td><td>power</td><td><code>2 ** 3</code></td><td><code>8</code></td></tr>
+      </table>
+      <div class="analogy">
+        <span class="callout-label">Real life — // and %</span>
+        Sharing <strong>7 sweets</strong> among <strong>2</strong> kids. Each kid gets <code>7 // 2 = 3</code> sweets (floor divide = how many whole each gets), and <code>7 % 2 = 1</code> sweet is <em>left over</em> (modulo = the remainder). That's exactly what these two operators give you.
+      </div>
+      <div class="why">
+        <span class="callout-label">Why % matters so much later</span>
+        <code>%</code> answers "is this divisible / even / odd?". <code>n % 2 == 0</code> means even. <code>i % len(arr)</code> wraps an index back to the start (clocks, circular buffers). You'll use it constantly.
+      </div>
+
+      <h2>Comparison &amp; logical operators</h2>
+      <p>These give back a <code>bool</code> (<code>True</code>/<code>False</code>) — the basis of all decisions:</p>
+      <pre><code>5 &gt; 3        <span class="out"># True</span>
+5 == 5       <span class="out"># True   (== is "equals"; = is "store")</span>
+5 != 3       <span class="out"># True   (!= is "not equal")</span>
+(5 &gt; 3) and (2 &gt; 4)   <span class="out"># False  (and: BOTH must be true)</span>
+(5 &gt; 3) or  (2 &gt; 4)   <span class="out"># True   (or: AT LEAST ONE true)</span>
+not (5 &gt; 3)          <span class="out"># False  (not: flips it)</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">The #1 beginner bug</span>
+        <code>=</code> stores a value; <code>==</code> compares. <code>if x = 5</code> is an error; you want <code>if x == 5</code>. Say them in your head differently: "<em>becomes</em>" vs "<em>is equal to</em>".
+      </div>
+
+      <div class="quiz" data-quiz='{"q":"What is  17 % 5 ?","options":["3","2","3.4","12"],"answer":1,"why":"17 divided by 5 is 3 remainder 2. Modulo gives the remainder, so 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you check if a number n is even?","options":["n / 2 == 0","n % 2 == 0","n // 2 == 0","n ** 2 == 0"],"answer":1,"why":"Even means no remainder when divided by 2, so n % 2 == 0."}'></div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py2"></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What is  10 // 3 ?","options":["3","3.33","4","1"],"answer":0,"why":"// is floor division — how many whole 3s fit in 10, which is 3."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  10 % 3 ?","options":["3","0","1","3.33"],"answer":2,"why":"% is the remainder. 10 = 3*3 + 1, so the remainder is 1."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  2 ** 5 ?","options":["10","25","32","7"],"answer":2,"why":"** is power. 2 to the 5th is 32."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is the result of  9 / 3 and its type?","options":["3 (int)","3.0 (float)","3.0 (int)","Error"],"answer":1,"why":"/ always returns a float, so 3.0."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is  7 % 2 == 0  true or false?","options":["True","False"],"answer":1,"why":"7 is odd, remainder is 1, so 7 % 2 == 0 is False."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  True and False ?","options":["True","False"],"answer":1,"why":"and needs BOTH sides true; one is false, so False."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  True or False ?","options":["True","False"],"answer":0,"why":"or needs AT LEAST one side true, so True."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  not True ?","options":["True","False"],"answer":1,"why":"not flips the value, so False."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  3 + 4 * 2 ?","options":["14","11","10","24"],"answer":1,"why":"Multiplication happens before addition: 4*2=8, then 3+8=11."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  (3 + 4) * 2 ?","options":["14","11","10","24"],"answer":0,"why":"Brackets first: 3+4=7, then 7*2=14."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you check if a number n is even?","options":["n / 2 == 0","n % 2 == 0","n // 2 == 0","n ** 2 == 0"],"answer":1,"why":"Even means no remainder when divided by 2: n % 2 == 0."}'></div>
+      <div class="quiz" data-quiz='{"q":"Which one COMPARES two values for equality?","options":["=","==","//","%"],"answer":1,"why":"== compares. A single = stores a value into a variable."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Even or odd</span><span class="arrow">＋</span></summary><div class="pbody"><p>Check whether 18 is even and print True or False.</p><details class="sol"><summary>Show answer</summary><pre><code>print(18 % 2 == 0)   # True</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Powers</span><span class="arrow">＋</span></summary><div class="pbody"><p>Compute 2 to the power 10.</p><details class="sol"><summary>Show answer</summary><pre><code>print(2 ** 10)   # 1024</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="2">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p2a"><input type="checkbox"><label>I know the difference between <code>/</code>, <code>//</code> and <code>%</code></label></li>
+        <li data-id="p2b"><input type="checkbox"><label>I can test even/odd with <code>%</code></label></li>
+        <li data-id="p2c"><input type="checkbox"><label>I know <code>and</code> / <code>or</code> / <code>not</code></label></li>
+        <li data-id="p2d"><input type="checkbox"><label>I never confuse <code>=</code> with <code>==</code></label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="0">← Back</button><button data-go="2">Next: Strings →</button></div>
+    </section>
+
+    <!-- ===== SECTION 3 ===== -->
+    <section class="section-page" data-sec="3" hidden>
+      <div class="kicker">Section 3 · Text</div>
+      <h1>Strings</h1>
+      <p class="subtitle">A string is a row of characters, each with a position (index). Slicing lets you grab any piece — let's see it visually.</p>
+
+      <h2>Strings are indexed rows of characters</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        Think of a string as a <strong>row of lockers</strong>, each holding one character, numbered from <strong>0</strong>. Python also lets you count from the end with negative numbers: <code>-1</code> is the last character.
+      </div>
+
+      <h3>🎚️ Animation — slicing a string</h3>
+      <p>Click a slice and watch which characters it grabs. <code>s[start:stop]</code> takes from <code>start</code> up to <strong>but not including</strong> <code>stop</code>.</p>
+      <div class="widget">
+        <div style="font-size:0.84rem;margin-bottom:0.4rem;">s = <code>"PYTHON"</code></div>
+        <div class="cells" id="sl-cells"></div>
+        <div style="margin:0.5rem 0;">
+          <button class="chip" data-slice="0">s[0]</button>
+          <button class="chip" data-slice="-1">s[-1]</button>
+          <button class="chip" data-slice="1:4">s[1:4]</button>
+          <button class="chip" data-slice=":3">s[:3]</button>
+          <button class="chip" data-slice="3:">s[3:]</button>
+          <button class="chip" data-slice="::-1">s[::-1]</button>
+        </div>
+        <div class="logbox" id="sl-log">Click a slice above.</div>
+      </div>
+      <div class="why">
+        <span class="callout-label">The slice rule (memorise)</span>
+        <code>s[a:b]</code> = from index <code>a</code> up to <em>but not including</em> <code>b</code>. Leave out <code>a</code> → start from the beginning. Leave out <code>b</code> → go to the end. <code>s[::-1]</code> reverses the whole string.
+      </div>
+
+      <h2>Useful string tools</h2>
+      <pre><code>s = "Hello World"
+len(s)            <span class="out"># 11  (how many characters)</span>
+s.lower()         <span class="out"># "hello world"</span>
+s.upper()         <span class="out"># "HELLO WORLD"</span>
+s.split()         <span class="out"># ["Hello", "World"]  (break into a list)</span>
+"-".join(["a","b","c"])  <span class="out"># "a-b-c"  (glue a list into text)</span>
+"World" in s      <span class="out"># True  (is it inside?)</span>
+s.replace("World","Python")  <span class="out"># "Hello Python"</span></code></pre>
+      <h3>f-strings — the clean way to build text</h3>
+      <pre><code>name = "Noorain"; age = 26
+f"My name is {name} and I am {age}"   <span class="out"># "My name is Noorain and I am 26"</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">Strings are immutable</span>
+        You cannot change a character in place: <code>s[0] = "h"</code> is an ERROR. Methods like <code>.lower()</code> return a <em>new</em> string; they never edit the original. To "change" a string, you reassign: <code>s = s.lower()</code>.
+      </div>
+
+      <div class="quiz" data-quiz='{"q":"For s = \"PYTHON\", what is s[1:4] ?","options":["\"PYT\"","\"YTH\"","\"YTHO\"","\"PYTH\""],"answer":1,"why":"Start at index 1 (Y), stop BEFORE index 4 (O). So Y, T, H."}'></div>
+      <div class="quiz" data-quiz='{"q":"Why does s[0] = \"x\" cause an error?","options":["Index 0 does not exist","Strings are immutable — you cannot edit in place","You must use s.set(0)","Only lists allow indexing"],"answer":1,"why":"Strings cannot be changed in place. Build a new string instead."}'></div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py3"></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What is  len(\"hello\") ?","options":["4","5","6","1"],"answer":1,"why":"hello has 5 characters."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  \"hello\"[0] ?","options":["h","e","o","hello"],"answer":0,"why":"Indexing starts at 0, so index 0 is the first letter h."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  \"hello\"[-1] ?","options":["h","o","l","Error"],"answer":1,"why":"-1 is the last character, o."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  \"hello\"[1:3] ?","options":["he","ell","el","llo"],"answer":2,"why":"From index 1 up to but NOT including 3: e, l."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  \"hi\".upper() return?","options":["hi","HI","Hi","Error"],"answer":1,"why":"upper() returns a new uppercase string HI."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  \"a,b,c\".split(\",\") give?","options":["abc","[a, b, c]","a-b-c","Error"],"answer":1,"why":"split breaks the text on the comma into a list of three pieces."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  \"-\".join([\"a\",\"b\"]) give?","options":["ab","a-b","[a, b]","-ab"],"answer":1,"why":"join glues the list items together with the dash between them: a-b."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is  \"cat\" in \"category\"  ?","options":["True","False"],"answer":0,"why":"cat appears at the start of category, so True."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  \"abc\"[::-1] ?","options":["abc","cba","bca","Error"],"answer":1,"why":"[::-1] reverses the string, giving cba."}'></div>
+      <div class="quiz" data-quiz='{"q":"name = \"Sam\". What does  f\"Hi {name}\"  give?","options":["Hi {name}","Hi Sam","HiSam","Error"],"answer":1,"why":"An f-string drops the value of name in place: Hi Sam."}'></div>
+      <div class="quiz" data-quiz='{"q":"Why does  s[0] = \"x\"  raise an error?","options":["Index 0 is invalid","Strings are immutable — cannot edit in place","Must use s.set(0)","Only numbers can be indexed"],"answer":1,"why":"Strings cannot be changed in place. Build a new string instead."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  \"Hello\".lower() return?","options":["HELLO","hello","Hello","hELLO"],"answer":1,"why":"lower() returns an all-lowercase copy."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Reverse a word</span><span class="arrow">＋</span></summary><div class="pbody"><p>Given <code>s = "python"</code>, print it reversed.</p><details class="sol"><summary>Show answer</summary><pre><code>s = "python"
+print(s[::-1])   # nohtyp</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · First three letters</span><span class="arrow">＋</span></summary><div class="pbody"><p>Print the first 3 characters of <code>"interview"</code>.</p><details class="sol"><summary>Show answer</summary><pre><code>print("interview"[:3])   # int</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="3">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p3a"><input type="checkbox"><label>I can index with positive and negative numbers</label></li>
+        <li data-id="p3b"><input type="checkbox"><label>I understand <code>s[a:b]</code> excludes <code>b</code></label></li>
+        <li data-id="p3c"><input type="checkbox"><label>I can use split, join, in, and f-strings</label></li>
+        <li data-id="p3d"><input type="checkbox"><label>I know strings are immutable</label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="1">← Back</button><button data-go="3">Next: Lists →</button></div>
+    </section>
+
+    <!-- ===== SECTION 4 ===== -->
+    <section class="section-page" data-sec="4" hidden>
+      <div class="kicker">Section 4 · The workhorse</div>
+      <h1>Lists</h1>
+      <p class="subtitle">A list is an ordered, changeable collection — the single most-used structure in Python. Master it and most code clicks.</p>
+
+      <h2>What is a list?</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A list is a <strong>numbered shopping list</strong> you can edit: add items, cross some off, reorder them. Each item has a position (index from 0), and you can change the contents any time.
+      </div>
+      <pre><code>nums = [10, 20, 30]
+nums[0]            <span class="out"># 10   (first item)</span>
+nums[-1]           <span class="out"># 30   (last item)</span>
+nums[1:3]          <span class="out"># [20, 30]  (slicing works just like strings)</span></code></pre>
+
+      <h2>Changing a list (it's mutable)</h2>
+      <pre><code>nums = [10, 20, 30]
+nums.append(40)    <span class="out"># [10, 20, 30, 40]  add to the end</span>
+nums.pop()         <span class="out"># removes & returns 40 → [10, 20, 30]</span>
+nums.insert(1, 99) <span class="out"># [10, 99, 20, 30]  insert at index 1</span>
+nums.remove(99)    <span class="out"># [10, 20, 30]  remove first matching value</span>
+len(nums)          <span class="out"># 3</span>
+30 in nums         <span class="out"># True</span></code></pre>
+      <div class="why">
+        <span class="callout-label">List vs string — the key difference</span>
+        Strings are <strong>immutable</strong> (can't change in place). Lists are <strong>mutable</strong> — <code>nums[0] = 99</code> works fine. That's why lists are the go-to when you need to build up or modify a collection.
+      </div>
+
+      <h2>Sorting &amp; handy tools</h2>
+      <pre><code>nums = [3, 1, 2]
+sorted(nums)       <span class="out"># [1, 2, 3]  returns a NEW sorted list</span>
+nums.sort()        <span class="out"># sorts nums itself, in place</span>
+sum(nums)          <span class="out"># 6</span>
+min(nums), max(nums)  <span class="out"># (1, 3)</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">sorted() vs .sort()</span>
+        <code>sorted(nums)</code> returns a brand-new sorted list and leaves the original alone. <code>nums.sort()</code> changes <code>nums</code> in place and returns <code>None</code>. Mixing these up (<code>x = nums.sort()</code> gives you <code>None</code>!) is a classic beginner trap.
+      </div>
+
+      <div class="quiz" data-quiz='{"q":"What does nums.append(5) do to nums = [1, 2]?","options":["Returns a new list [1,2,5]","Adds 5 to the end → [1,2,5]","Inserts 5 at the front","Raises an error"],"answer":1,"why":"append adds to the end and changes the list in place."}'></div>
+      <div class="quiz" data-quiz='{"q":"After  x = [3,1,2].sort()  what is x?","options":["[1,2,3]","[3,1,2]","None","An error"],"answer":2,"why":".sort() sorts in place and returns None. Use sorted() if you want the sorted list back."}'></div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py4"></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What is  [10, 20, 30][1] ?","options":["10","20","30","1"],"answer":1,"why":"Index 1 is the second item, 20."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  len([1, 2, 3]) ?","options":["2","3","4","1"],"answer":1,"why":"Three items, so length 3."}'></div>
+      <div class="quiz" data-quiz='{"q":"After  nums = [1, 2]; nums.append(3)  what is nums?","options":["[1, 2]","[3, 1, 2]","[1, 2, 3]","[1, 3]"],"answer":2,"why":"append adds 3 to the end."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  [1, 2, 3].pop()  return?","options":["1","3","[1, 2]","None"],"answer":1,"why":"pop() removes and returns the last item, 3."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  sorted([3, 1, 2]) ?","options":["[3, 2, 1]","[1, 2, 3]","[3, 1, 2]","None"],"answer":1,"why":"sorted returns a new list in ascending order."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  [10, 20, 30][-1] ?","options":["10","20","30","Error"],"answer":2,"why":"-1 is the last item, 30."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  [1, 2, 3][0:2] ?","options":["[1, 2]","[1, 2, 3]","[2, 3]","[1]"],"answer":0,"why":"From index 0 up to but not including 2: items 1 and 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is  2 in [1, 2, 3]  ?","options":["True","False"],"answer":0,"why":"2 is in the list, so True."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  [1, 2] + [3] ?","options":["[1, 2, 3]","[1, 2][3]","6","Error"],"answer":0,"why":"+ joins two lists into one."}'></div>
+      <div class="quiz" data-quiz='{"q":"After  x = [3, 1].sort()  what is x?","options":["[1, 3]","[3, 1]","None","Error"],"answer":2,"why":".sort() sorts in place and returns None. Use sorted() to get a list back."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is  nums[0] = 9  allowed on a list?","options":["Yes — lists are mutable","No — lists are immutable","Only with .set()","Only for numbers"],"answer":0,"why":"Lists can be changed in place, unlike strings."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  [0] * 3 ?","options":["[0, 3]","[0, 0, 0]","[3]","Error"],"answer":1,"why":"Multiplying a list repeats it: three zeros."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Add and sum</span><span class="arrow">＋</span></summary><div class="pbody"><p>Add 5 to the end of <code>[1, 2, 3]</code> and print the total of the list.</p><details class="sol"><summary>Show answer</summary><pre><code>nums = [1, 2, 3]
+nums.append(5)
+print(sum(nums))   # 11</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Last item</span><span class="arrow">＋</span></summary><div class="pbody"><p>Print the last item of any list <code>nums</code> without knowing its length.</p><details class="sol"><summary>Show answer</summary><pre><code>print(nums[-1])</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="4">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p4a"><input type="checkbox"><label>I can index, slice, and check membership in a list</label></li>
+        <li data-id="p4b"><input type="checkbox"><label>I can append, pop, insert, remove</label></li>
+        <li data-id="p4c"><input type="checkbox"><label>I know lists are mutable (unlike strings)</label></li>
+        <li data-id="p4d"><input type="checkbox"><label>I know the difference between <code>sorted()</code> and <code>.sort()</code></label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="2">← Back</button><button data-go="4">Next: Dictionaries →</button></div>
+    </section>
+
+    <!-- ===== SECTION 5 ===== -->
+    <section class="section-page" data-sec="5" hidden>
+      <div class="kicker">Section 5 · Key → value</div>
+      <h1>Dictionaries</h1>
+      <p class="subtitle">A dictionary stores pairs: a <em>key</em> and its <em>value</em>. Look up by key and get the value instantly. (This is the same thing DSA calls a hash map!)</p>
+
+      <h2>What is a dictionary?</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A real dictionary (or a phone book): you look up a <strong>word</strong> (the key) and instantly get its <strong>meaning</strong> (the value) — without reading every page. Python's <code>dict</code> works exactly like that.
+      </div>
+      <pre><code>person = {"name": "Noorain", "age": 26}
+person["name"]          <span class="out"># "Noorain"  (look up by key)</span>
+person["age"] = 27      <span class="out"># change a value</span>
+person["city"] = "Pune" <span class="out"># add a new pair</span>
+"name" in person        <span class="out"># True  (is this key present?)</span>
+person.get("phone", "n/a")  <span class="out"># "n/a"  (safe lookup with a default)</span></code></pre>
+      <div class="why">
+        <span class="callout-label">Why dictionaries are everywhere</span>
+        Looking something up by key is <strong>instant</strong> (no scanning). That makes dicts perfect for "remember what I've seen", counting things, and mapping one thing to another. In DSA this exact tool (the hash map) turns slow O(n²) solutions into fast O(n) ones — see the DSA tab.
+      </div>
+
+      <h2>Counting with a dictionary (super common)</h2>
+      <pre><code>text = "banana"
+counts = {}
+for ch in text:
+    counts[ch] = counts.get(ch, 0) + 1   <span class="cmt"># add 1, defaulting to 0</span>
+print(counts)    <span class="out"># {'b': 1, 'a': 3, 'n': 2}</span></code></pre>
+      <h3>Looping over a dictionary</h3>
+      <pre><code>for key in person:              <span class="cmt"># keys</span>
+    print(key)
+for key, value in person.items():   <span class="cmt"># key AND value together</span>
+    print(key, value)</code></pre>
+
+      <div class="quiz" data-quiz='{"q":"How do you safely read a key that might not exist, with a fallback?","options":["d[key]","d.get(key, default)","d.find(key)","d.value(key)"],"answer":1,"why":"d[key] crashes if the key is missing. d.get(key, default) returns the default instead."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is a dictionary best at?","options":["Keeping items in sorted order","Instant lookup of a value by its key","Storing duplicate keys","Math operations"],"answer":1,"why":"Look up by key is instant — that is the whole point of a dict (a hash map)."}'></div>
+
+      <h3>👀 Run the code (press ▶ Play to auto-run)</h3>
+      <div class="trace" id="trace-py5"></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What does  {\"a\": 1}[\"a\"]  give?","options":["a","1","Error","0"],"answer":1,"why":"Looking up the key a returns its value 1."}'></div>
+      <div class="quiz" data-quiz='{"q":"If key x is missing, what does  d.get(\"x\", 0)  return?","options":["Error","None","0","x"],"answer":2,"why":"get returns the default (0 here) when the key is missing."}'></div>
+      <div class="quiz" data-quiz='{"q":"Is  \"a\" in {\"a\": 1}  ?","options":["True","False"],"answer":0,"why":"in checks the KEYS, and a is a key, so True."}'></div>
+      <div class="quiz" data-quiz='{"q":"How do you add a new pair to dict d?","options":["d.add(b, 2)","d[\"b\"] = 2","d.append(b, 2)","d.insert(b, 2)"],"answer":1,"why":"Assign to a new key: d[key] = value."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is  len({\"a\": 1, \"b\": 2}) ?","options":["1","2","4","Error"],"answer":1,"why":"Two key-value pairs, so length 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  d.items()  give you?","options":["Only keys","Only values","Key-value pairs","The length"],"answer":2,"why":"items() yields each key together with its value — great for looping."}'></div>
+      <div class="quiz" data-quiz='{"q":"What happens with  d[\"x\"]  when key x does not exist?","options":["Returns None","Returns 0","Raises a KeyError","Adds the key"],"answer":2,"why":"Direct [key] access crashes if missing. Use .get() for a safe default."}'></div>
+      <div class="quiz" data-quiz='{"q":"Which counts occurrences cleanly?","options":["d[ch] = d[ch] + 1","d[ch] = d.get(ch, 0) + 1","d.count(ch)","d.add(ch)"],"answer":1,"why":"get(ch, 0) defaults missing keys to 0, so the first count works."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can two keys in a dict be the same?","options":["Yes, duplicates allowed","No, keys are unique","Only for strings","Only for numbers"],"answer":1,"why":"Keys are unique; assigning the same key again overwrites the value."}'></div>
+      <div class="quiz" data-quiz='{"q":"What is the average lookup time of a dict?","options":["O(n)","O(log n)","O(1)","O(n^2)"],"answer":2,"why":"Lookup by key is roughly instant — O(1) on average. This is the hash map superpower."}'></div>
+      <div class="quiz" data-quiz='{"q":"Can a dict value be a list?","options":["Yes","No","Only numbers allowed","Only strings allowed"],"answer":0,"why":"Values can be anything — numbers, strings, lists, even other dicts."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  for k in d  loop over?","options":["The values","The keys","The pairs","Nothing"],"answer":1,"why":"Looping over a dict directly gives its keys. Use .items() for pairs."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Count letters</span><span class="arrow">＋</span></summary><div class="pbody"><p>Count how many times each character appears in <code>"apple"</code>.</p><details class="sol"><summary>Show answer</summary><pre><code>counts = {}
+for ch in "apple":
+    counts[ch] = counts.get(ch, 0) + 1
+print(counts)   # {a:1, p:2, l:1, e:1}</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Safe lookup</span><span class="arrow">＋</span></summary><div class="pbody"><p>From an empty dict, safely read key <code>"x"</code> with a fallback of 0.</p><details class="sol"><summary>Show answer</summary><pre><code>d = {}
+print(d.get("x", 0))   # 0</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="5">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p5a"><input type="checkbox"><label>I can create a dict and look up / add / change values</label></li>
+        <li data-id="p5b"><input type="checkbox"><label>I can use <code>.get(key, default)</code> and <code>key in dict</code></label></li>
+        <li data-id="p5c"><input type="checkbox"><label>I can count things with a dict</label></li>
+        <li data-id="p5d"><input type="checkbox"><label>I can loop with <code>.items()</code></label></li>
+      </ul>
+      <div class="pagenav"><button class="ghost" data-go="3">← Back</button><button data-go="5">Next: Loops →</button></div>
+    </section>
+
+    <!-- ===== SECTION 6 ===== -->
+    <section class="section-page" data-sec="6" hidden>
+      <div class="kicker">Section 6 · Repeating work</div>
+      <h1>Loops</h1>
+      <p class="subtitle">A loop repeats a block of code. This is where beginners get confused about "how it flows" — so let's watch it run, one step at a time.</p>
+
+      <h2>The <code>for</code> loop — do something for each item</h2>
+      <div class="analogy">
+        <span class="callout-label">Real life</span>
+        A teacher taking attendance: for <em>each</em> student in the room, call their name. The loop does the same action once per item, with the loop variable holding "the current one".
+      </div>
+      <pre><code>for fruit in ["apple", "banana", "cherry"]:
+    print(fruit)
+<span class="out"># apple</span>
+<span class="out"># banana</span>
+<span class="out"># cherry</span></code></pre>
+
+      <h3>🎚️ Animation — watch a loop add up a list</h3>
+      <p>Step through <code>total = 0; for x in nums: total += x</code>. Watch the current item light up and the running <code>total</code> grow.</p>
+      <div class="widget">
+        <div style="font-size:0.84rem;margin-bottom:0.4rem;">nums = <code>[10, 20, 30, 40]</code></div>
+        <div class="cells" id="lp-cells"></div>
+        <div class="logbox" id="lp-log"></div>
+        <div style="font-size:0.82rem;color:#555;">x = <b id="lp-x">–</b> &nbsp;·&nbsp; total = <b id="lp-total">0</b></div>
+        <button id="lp-next">Next item ▶</button>
+        <button id="lp-reset" class="ghost">Restart</button>
+      </div>
+
+      <h2><code>range()</code> — loop a fixed number of times</h2>
+      <pre><code>for i in range(3):     <span class="cmt"># 0, 1, 2  (stops BEFORE 3)</span>
+    print(i)
+for i in range(1, 4):  <span class="cmt"># 1, 2, 3</span>
+    print(i)</code></pre>
+      <h3><code>enumerate</code> — when you need the index too</h3>
+      <pre><code>for i, fruit in enumerate(["apple", "banana"]):
+    print(i, fruit)
+<span class="out"># 0 apple</span>
+<span class="out"># 1 banana</span></code></pre>
+
+      <h2>The <code>while</code> loop &amp; break / continue</h2>
+      <pre><code>n = 5
+while n &gt; 0:        <span class="cmt"># keep going WHILE the condition is true</span>
+    print(n)
+    n -= 1          <span class="cmt"># ⚠ must move toward stopping, or it loops forever!</span>
+
+for x in nums:
+    if x == 30: break      <span class="cmt"># stop the loop entirely</span>
+    if x == 20: continue   <span class="cmt"># skip to the next item</span></code></pre>
+      <div class="gotcha">
+        <span class="callout-label">The infinite-loop trap</span>
+        A <code>while</code> loop runs as long as its condition is true. If nothing inside ever makes it false (you forgot <code>n -= 1</code>), it runs forever. Always ask: "what makes this loop stop?"
+      </div>
+
+      <h3>👀 Step through the code</h3>
+      <div class="trace" id="trace-loop"></div>
+
+      <div class="quiz" data-quiz='{"q":"What numbers does range(2, 6) produce?","options":["2, 3, 4, 5, 6","2, 3, 4, 5","3, 4, 5, 6","2, 4, 6"],"answer":1,"why":"range(start, stop) goes from start up to but NOT including stop. So 2, 3, 4, 5."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  break  do inside a loop?","options":["Skips to the next item","Stops the loop entirely","Pauses for a second","Restarts the loop"],"answer":1,"why":"break exits the loop immediately. (continue is the one that skips to the next item.)"}'></div>
+
+      <h2>🧠 More quizzes</h2>
+      <div class="quiz" data-quiz='{"q":"What numbers does  range(3)  produce?","options":["1, 2, 3","0, 1, 2","0, 1, 2, 3","3"],"answer":1,"why":"range(n) goes 0 up to but not including n: 0, 1, 2."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  range(1, 4)  produce?","options":["1, 2, 3, 4","1, 2, 3","0, 1, 2, 3","1, 4"],"answer":1,"why":"From 1 up to but not including 4: 1, 2, 3."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  range(2, 10, 2)  produce?","options":["2, 4, 6, 8","2, 4, 6, 8, 10","2, 3, 4, 5","0, 2, 4"],"answer":0,"why":"Start 2, step 2, stop before 10: 2, 4, 6, 8."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  break  do?","options":["Skips to next item","Stops the loop entirely","Pauses 1 second","Restarts the loop"],"answer":1,"why":"break exits the loop immediately."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  continue  do?","options":["Stops the loop","Skips to the next item","Ends the program","Repeats the item"],"answer":1,"why":"continue skips the rest of this turn and moves to the next item."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  enumerate(list)  give each turn?","options":["Just the item","Just the index","The index AND the item","The length"],"answer":2,"why":"enumerate gives index and item together: for i, x in enumerate(...)."}'></div>
+      <div class="quiz" data-quiz='{"q":"A while loop whose condition never becomes false will...","options":["Stop after 10 turns","Run forever (infinite loop)","Raise an error","Skip itself"],"answer":1,"why":"It loops forever. Always make sure something moves it toward stopping."}'></div>
+      <div class="quiz" data-quiz='{"q":"total=0; for x in [1,2,3]: total+=x. Final total?","options":["3","6","123","0"],"answer":1,"why":"1 + 2 + 3 = 6."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  for ch in \"ab\"  loop over?","options":["The whole word once","Each character: a then b","Nothing","The length"],"answer":1,"why":"Looping a string gives one character at a time."}'></div>
+      <div class="quiz" data-quiz='{"q":"Two nested loops, outer over 3 items, inner over 4 — how many inner runs total?","options":["7","12","3","4"],"answer":1,"why":"For each of the 3 outer turns the inner runs 4 times: 3 x 4 = 12."}'></div>
+      <div class="quiz" data-quiz='{"q":"What does  range(0)  produce?","options":["0","Nothing (empty)","An error","0, 1"],"answer":1,"why":"range(0) is empty, so the loop body never runs."}'></div>
+      <div class="quiz" data-quiz='{"q":"To loop with the index, which is cleanest?","options":["for i in range(len(a)): a[i]","for x in a","while a","for i, x in enumerate(a)"],"answer":3,"why":"enumerate gives both the index and the value, the cleanest way."}'></div>
+
+      <h2>🛠️ Practice — try, then reveal</h2>
+      <details class="problem"><summary><span>P1 · Print 1 to 5</span><span class="arrow">＋</span></summary><div class="pbody"><p>Print the numbers 1, 2, 3, 4, 5 using a loop.</p><details class="sol"><summary>Show answer</summary><pre><code>for i in range(1, 6):
+    print(i)</code></pre></details></div></details>
+      <details class="problem"><summary><span>P2 · Sum a list with a loop</span><span class="arrow">＋</span></summary><div class="pbody"><p>Add up <code>[4, 5, 6]</code> using a loop (no sum()).</p><details class="sol"><summary>Show answer</summary><pre><code>total = 0
+for x in [4, 5, 6]:
+    total += x
+print(total)   # 15</code></pre></details></div></details>
+
+      <ul class="checklist" data-section="6">
+        <li class="legend">Tick when you can do it</li>
+        <li data-id="p6a"><input type="checkbox"><label>I can write a <code>for</code> loop over a list</label></li>
+        <li data-id="p6b"><input type="checkbox"><label>I understand <code>range()</code> stops before the end value</label></li>
+        <li data-id="p6c"><input type="checkbox"><label>I can use <code>enumerate</code> for index + item</label></li>
+        <li data-id="p6d"><input type="checkbox"><label>I know <code>break</code> vs <code>continue</code>, and the infinite-loop trap</label></li>
+      </ul>
+      <div class="pagenav">
+        <button class="ghost" data-go="4">← Back</button>
+        <span style="font-family:-apple-system,sans-serif;font-size:0.85rem;color:var(--ink-soft);align-self:center;">More sections coming →</span>
+      </div>
+      <div class="coming" style="margin-top:1.5rem;">
+        <strong>Next up:</strong> Conditionals (if/elif/else) · Functions · Comprehensions · Classes (for Frappe). Then jump to the <a href="index.html">📘 DSA tab</a>.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+/* ---------- Quiz ---------- */
+const Quiz={mountAll(){document.querySelectorAll('.quiz[data-quiz]').forEach(el=>{try{this.mount(el,JSON.parse(el.dataset.quiz));}catch(e){el.style.display='none';}});},
+mount(el,{q,options,answer,why}){el.innerHTML='';const qEl=document.createElement('div');qEl.className='q';qEl.textContent=q;el.appendChild(qEl);const fb=document.createElement('div');fb.className='feedback';let answered=false;options.forEach((text,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=text;b.onclick=()=>{if(answered)return;answered=true;const ok=i===answer;b.classList.add(ok?'correct':'wrong');if(!ok)el.querySelectorAll('.opt')[answer].classList.add('correct');fb.className='feedback '+(ok?'correct':'wrong');fb.textContent=(ok?'✓ Correct. ':'✗ Not quite. ')+(why||'');};el.appendChild(b);});el.appendChild(fb);}};
+
+/* ---------- Code Tracer ---------- */
+function makeTrace(id, code, steps){
+  const root=document.getElementById(id); if(!root) return;
+  const codeWrap=document.createElement('div'); codeWrap.className='tcode';
+  code.forEach((ln,i)=>{const row=document.createElement('div'); row.className='tline'; const html=ln.replace(/(#.*)$/,'<span class="tcmt">$1</span>'); row.innerHTML=`<span class="gut">${i+1}</span><span>${html||' '}</span>`; codeWrap.appendChild(row);});
+  const panel=document.createElement('div'); panel.className='panel';
+  const vars=document.createElement('div'); vars.className='vars';
+  const note=document.createElement('div'); note.className='tnote';
+  panel.appendChild(vars); panel.appendChild(note);
+  const ctrl=document.createElement('div'); ctrl.className='ctrl';
+  const prev=document.createElement('button'); prev.className='ghost'; prev.textContent='◀ Prev';
+  const next=document.createElement('button'); next.textContent='Next ▶';
+  const play=document.createElement('button'); play.textContent='▶ Play';
+  const reset=document.createElement('button'); reset.className='ghost'; reset.textContent='⟲';
+  const stepN=document.createElement('span'); stepN.className='step-n';
+  ctrl.append(prev,next,play,reset,stepN); root.append(ctrl,codeWrap,panel);
+  let cur=-1,timer=null;
+  function stop(){if(timer){clearInterval(timer);timer=null;play.textContent='▶ Play';}}
+  function render(){const lines=[...codeWrap.querySelectorAll('.tline')];lines.forEach(l=>l.classList.remove('on'));if(cur<0){note.textContent='Press "Next ▶" to run the code.';vars.innerHTML='';stepN.textContent=`0 / ${steps.length}`;}else{const s=steps[cur];const on=Array.isArray(s.line)?s.line:[s.line];on.forEach(n=>{const row=lines[n-1];if(row)row.classList.add('on');});vars.innerHTML=Object.entries(s.vars||{}).map(([k,v])=>`<span class="vchip">${k} = <b>${v}</b></span>`).join('');note.textContent=s.note;stepN.textContent=`${cur+1} / ${steps.length}`;}prev.disabled=cur<0;next.disabled=cur>=steps.length-1;}
+  next.onclick=()=>{stop();if(cur<steps.length-1){cur++;render();}};
+  prev.onclick=()=>{stop();if(cur>=0){cur--;render();}};
+  reset.onclick=()=>{stop();cur=-1;render();};
+  play.onclick=()=>{if(timer){stop();return;}play.textContent='⏸ Pause';timer=setInterval(()=>{if(cur>=steps.length-1){stop();return;}cur++;render();},1100);};
+  render();
+}
+
+/* ---------- String slicing animation ---------- */
+const SLS="PYTHON".split('');
+const slCells=document.getElementById('sl-cells'),slLog=document.getElementById('sl-log');
+function slDraw(active){slCells.innerHTML=SLS.map((c,i)=>{const on=active.includes(i);return `<div class="cell ${on?'good':''}"><div class="v">${c}</div><div class="i">${i} / ${i-SLS.length}</div></div>`;}).join('');}
+function slShow(spec){
+  let idxs=[],res='';
+  if(spec==='0'){idxs=[0];res='"P"';}
+  else if(spec==='-1'){idxs=[5];res='"N"';}
+  else if(spec==='1:4'){idxs=[1,2,3];res='"YTH"';}
+  else if(spec===':3'){idxs=[0,1,2];res='"PYT"';}
+  else if(spec==='3:'){idxs=[3,4,5];res='"HON"';}
+  else if(spec==='::-1'){idxs=[0,1,2,3,4,5];res='"NOHTYP"';}
+  slDraw(idxs);
+  slLog.innerHTML=`<code>s[${spec}]</code> → <b>${res}</b>`;
+}
+slDraw([]);
+document.querySelectorAll('[data-slice]').forEach(b=>b.onclick=()=>slShow(b.dataset.slice));
+
+/* ---------- Loop animation ---------- */
+const LP=[10,20,30,40];
+const lpCells=document.getElementById('lp-cells'),lpLog=document.getElementById('lp-log'),lpX=document.getElementById('lp-x'),lpTotal=document.getElementById('lp-total');
+let lpI,lpTotalV,lpDone;
+function lpDraw(){lpCells.innerHTML=LP.map((v,i)=>{let cls='cell';if(!lpDone&&i===lpI)cls+=' active';else if(i<lpI)cls+=' dim';return `<div class="${cls}"><div class="v">${v}</div><div class="i">i=${i}</div></div>`;}).join('');lpX.textContent=(lpDone||lpI<0)?'–':LP[lpI];lpTotal.textContent=lpTotalV;}
+function lpReset(){lpI=-1;lpTotalV=0;lpDone=false;lpDraw();lpLog.textContent='total starts at 0. Click "Next item" to add each number.';document.getElementById('lp-next').disabled=false;}
+function lpNext(){
+  if(lpDone)return;
+  lpI++;
+  if(lpI>=LP.length){lpDone=true;lpI=LP.length;lpDraw();lpLog.innerHTML=`Loop finished — every item added. <b>total = ${lpTotalV}</b>. ✓`;document.getElementById('lp-next').disabled=true;return;}
+  lpTotalV+=LP[lpI];
+  lpDraw();
+  lpLog.innerHTML=`x = ${LP[lpI]} → total = total + ${LP[lpI]} = <b>${lpTotalV}</b>.`;
+}
+document.getElementById('lp-next').onclick=lpNext;document.getElementById('lp-reset').onclick=lpReset;lpReset();
+
+/* ---------- Section tracers ---------- */
+makeTrace('trace-py1',["x = 5","y = x + 3","x = \"hi\"","print(x, y)"],[
+ {line:1,note:"Put 5 into the box x.",vars:{x:5}},
+ {line:2,note:"x is 5, so y = 5 + 3 = 8.",vars:{x:5,y:8}},
+ {line:3,note:"Replace x with text. x is now 'hi'. y is unchanged — a box can hold a new value (even a new type) any time.",vars:{x:"'hi'",y:8}},
+ {line:4,note:"print → hi 8. ✓",vars:{}}]);
+
+makeTrace('trace-py2',["a = 7","b = 2","print(a // b)","print(a % b)","print(a ** b)"],[
+ {line:[1,2],note:"a = 7, b = 2.",vars:{a:7,b:2}},
+ {line:3,note:"7 // 2 = 3 (how many whole 2s fit). Prints 3.",vars:{}},
+ {line:4,note:"7 % 2 = 1 (the leftover remainder). Prints 1.",vars:{}},
+ {line:5,note:"7 ** 2 = 49 (7 squared). Prints 49. ✓",vars:{}}]);
+
+makeTrace('trace-py3',["s = \"cat\"","s = s.upper()","out = s + \"!\"","print(out)"],[
+ {line:1,note:"s holds 'cat'.",vars:{s:"'cat'"}},
+ {line:2,note:".upper() returns a NEW string 'CAT'; we store it back into s.",vars:{s:"'CAT'"}},
+ {line:3,note:"Glue with + → 'CAT!'.",vars:{out:"'CAT!'"}},
+ {line:4,note:"print → CAT! ✓",vars:{}}]);
+
+makeTrace('trace-py4',["nums = [1, 2]","nums.append(3)","nums[0] = 9","total = sum(nums)","print(nums, total)"],[
+ {line:1,note:"A list with two items.",vars:{nums:"[1, 2]"}},
+ {line:2,note:"append(3) adds to the end (changes the list in place).",vars:{nums:"[1, 2, 3]"}},
+ {line:3,note:"Lists are mutable → change index 0 to 9.",vars:{nums:"[9, 2, 3]"}},
+ {line:4,note:"sum = 9 + 2 + 3 = 14.",vars:{total:14}},
+ {line:5,note:"print → [9, 2, 3] 14. ✓",vars:{}}]);
+
+makeTrace('trace-py5',["counts = {}","for ch in \"aba\":","    counts[ch] = counts.get(ch, 0) + 1","print(counts)"],[
+ {line:1,note:"Empty dictionary.",vars:{counts:"{}"}},
+ {line:[2,3],note:"ch = 'a'. get('a', 0) = 0, +1 → store 'a': 1.",vars:{counts:"{a: 1}"}},
+ {line:[2,3],note:"ch = 'b'. get('b', 0) = 0, +1 → store 'b': 1.",vars:{counts:"{a: 1, b: 1}"}},
+ {line:[2,3],note:"ch = 'a' again. get('a', 0) = 1, +1 → 'a': 2.",vars:{counts:"{a: 2, b: 1}"}},
+ {line:4,note:"print → {a: 2, b: 1}. ✓",vars:{}}]);
+
+/* ---------- Loop tracer ---------- */
+makeTrace('trace-loop',[
+"nums = [10, 20, 30]",
+"total = 0",
+"for x in nums:",
+"    total += x",
+"print(total)"
+],[
+ {line:[1,2],note:"Set up the list and start total at 0.",vars:{nums:"[10, 20, 30]",total:0}},
+ {line:3,note:"Loop begins. x takes the first item: 10.",vars:{x:10}},
+ {line:4,note:"total = 0 + 10 = 10.",vars:{x:10,total:10}},
+ {line:3,note:"Next item. x = 20.",vars:{x:20}},
+ {line:4,note:"total = 10 + 20 = 30.",vars:{x:20,total:30}},
+ {line:3,note:"Next item. x = 30.",vars:{x:30}},
+ {line:4,note:"total = 30 + 30 = 60.",vars:{x:30,total:60}},
+ {line:3,note:"No more items → the loop ends.",vars:{}},
+ {line:5,note:"print(total) → 60. ✓",vars:{total:60}}
+]);
+
+/* ---------- Section navigation ---------- */
+const pages=[...document.querySelectorAll('.section-page')];
+function showSection(idx){pages.forEach((p,i)=>p.hidden=(i!==idx));document.querySelectorAll('.navitem[data-go]').forEach(n=>n.classList.toggle('active',+n.dataset.go===idx));window.scrollTo({top:0,behavior:'smooth'});document.getElementById('sidebar').classList.remove('open');}
+document.querySelectorAll('[data-go]').forEach(el=>{const idx=+el.dataset.go;if(idx<0)return;el.addEventListener('click',()=>showSection(idx));});
+document.getElementById('menu-toggle').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+showSection(0);
+
+/* ---------- Progress + localStorage ---------- */
+const KEY='py-course-progress-v1';
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{};}catch(e){return{};}}
+function save(p){localStorage.setItem(KEY,JSON.stringify(p));}
+function updateBars(){
+  const all=document.querySelectorAll('.checklist input[type=checkbox]');
+  const done=[...all].filter(b=>b.checked).length;
+  document.getElementById('pct').textContent=`${done} / ${all.length}`;
+  document.getElementById('barfill').style.width=all.length?((done/all.length)*100)+'%':'0';
+  document.querySelectorAll('.checklist[data-section]').forEach(list=>{const sec=list.dataset.section,boxes=list.querySelectorAll('input'),d=[...boxes].filter(b=>b.checked).length;const mini=document.querySelector(`[data-mini="${sec}"]`);if(mini){mini.textContent=`${d}/${boxes.length}`;mini.closest('.navitem').classList.toggle('complete',d===boxes.length);}});
+}
+function initChecklist(){
+  const p=load();
+  document.querySelectorAll('.checklist li[data-id]').forEach(li=>{const id=li.dataset.id,box=li.querySelector('input');if(p[id]){box.checked=true;li.classList.add('done');}li.addEventListener('click',e=>{if(e.target!==box){box.checked=!box.checked;sync();}});box.addEventListener('change',sync);function sync(){const pr=load();pr[id]=box.checked;save(pr);li.classList.toggle('done',box.checked);updateBars();}});
+  updateBars();
+}
+document.getElementById('reset-progress').onclick=()=>{localStorage.removeItem(KEY);document.querySelectorAll('.checklist input').forEach(b=>b.checked=false);document.querySelectorAll('.checklist li').forEach(li=>li.classList.remove('done'));updateBars();};
+
+Quiz.mountAll();
+initChecklist();
+</script>
+</body>
+</html>
